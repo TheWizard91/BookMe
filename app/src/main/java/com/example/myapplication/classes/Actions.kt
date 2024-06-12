@@ -1,6 +1,7 @@
-package com.example.myapplication
+package com.example.myapplication.classes
 
 import androidx.navigation.NavController
+import com.example.myapplication.objects.Destinations
 
 class Actions(navController: NavController) {
     val openTask: (Int) -> Unit = { taskId -> navController.navigate("${Destinations.TaskDetailArgs}/${taskId}") }

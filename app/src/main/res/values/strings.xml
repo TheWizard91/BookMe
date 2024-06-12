@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="title_activity_login_activity">LoginActivity</string>
+    <string name="title_activity_sign_up">SignUp</string>
+    <string name="title_activity_user_account">UserAccountActivity</string>
+
+    <string name="basic_info">Basic Information</string>
+    <string name="account_setting_title">Please Set Up Your Account.</string>
+    <string name="title_activity_update_user_account">UpdateUserAccountActivity</string>
+    <string name="title_activity_view_all">ViewAllActivity</string>
 </resources>

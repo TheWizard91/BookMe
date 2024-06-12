@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "4234467488",
+    "project_id": "bookme-dc582",
+    "storage_bucket": "bookme-dc582.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:4234467488:android:aa00c36acf2365461691c5",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDb8elAN1E7GTbmTWHu90kSq6pwbnnOHwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
