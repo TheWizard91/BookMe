@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.json_data
 
 import android.content.Context
 import okio.IOException

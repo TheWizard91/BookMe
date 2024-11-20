@@ -42,6 +42,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.classes.databases.Authentication
 import com.example.myapplication.data_classes.SignupCredentials
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import kotlin.math.pow
@@ -50,14 +51,12 @@ class SignUpActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyApplicationTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    SignUpForm()
-                }
+            // A surface container using the 'background' color from the theme
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                SignUpForm()
             }
         }
     }
@@ -184,17 +183,10 @@ fun SignUpForm() {
 
         val context: Context = LocalContext.current
         val currentContext: Context = LocalContext.current
-        var emailTxt: String by remember {
-            mutableStateOf("")
-        }
-        var pswTxt: String by remember {
-            mutableStateOf("")
-        }
-        var confirmPswTxt: String by remember {
-            mutableStateOf("")
-        }
+        var emailTxt: String by remember { mutableStateOf("") }
+        var pswTxt: String by remember { mutableStateOf("") }
+        var confirmPswTxt: String by remember { mutableStateOf("") }
         val kc = LocalSoftwareKeyboardController.current
-//        var text by remember { mutableStateOf("") }
         var result by remember { mutableStateOf("") }
         val callback = {
             result = try {
@@ -249,16 +241,13 @@ fun SignUpForm() {
             )
 
             val signupCredentials = SignupCredentials(eml = emailTxt, pwd = pswTxt, confirmPwd = confirmPswTxt)
+            val authentication = Authentication(signupCredentials)
 
             Button(
                 onClick = {
-                    if (
-//                        true
-                        signupCredentials.checkSignupCredentials(signupCredentials, context)
-                        ) {
-                        signupCredentials.newUserAuth(context)
+                    if (authentication.checkSignupCredentials(context)) {
+                        authentication.newUserAuth(context)
                         currentContext.startActivity(Intent(currentContext, UserAccountActivity::class.java))
-//                        (context as Activity).finish()
                     }
                 },
                 enabled = true,

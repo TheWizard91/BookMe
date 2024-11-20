@@ -5,7 +5,11 @@
     <string name="title_activity_user_account">UserAccountActivity</string>
 
     <string name="basic_info">Basic Information</string>
+    <string name="update_basic_info">Update Basic Information</string>
     <string name="account_setting_title">Please Set Up Your Account.</string>
+    <string name="update_account_setting_title">Please Update Your Account.</string>
     <string name="title_activity_update_user_account">UpdateUserAccountActivity</string>
     <string name="title_activity_view_all">ViewAllActivity</string>
+    <string name="title_activity_clicked_book">ClickedBookActivity</string>
+    <string name="title_activity_best_sellers">BestSellersActivity</string>
 </resources>

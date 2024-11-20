@@ -61,7 +61,7 @@ class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyApplicationTheme {
+//            MyApplicationTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -69,7 +69,7 @@ class LoginActivity : ComponentActivity() {
                 ) {
                     LoginForm()
                 }
-            }
+//            }
         }
     }
 }
@@ -95,7 +95,7 @@ fun LoginField (
         mutableStateOf("") }
     val myBrush = remember {
         Brush.linearGradient(
-            colors = listOf(Color.Red, Color.Green, Color.Blue),//rainbowColors
+            colors = listOf(Color.Red, Color.Green, Color.Blue, Color.Yellow),//rainbowColors
             start = Offset(0.0f, 50.0f),
             end = Offset(0.0f, 100.0f)
         )
@@ -279,8 +279,8 @@ private fun login(cxt: Context, eml: String, pwd: String, user: FirebaseAuth) {
 }
 
 private fun <TResult> Task<TResult>.addOnCompleteListener(context: Context) {
-    addOnCompleteListener {
-        if (it.isSuccessful) {
+    addOnCompleteListener { taskResult ->
+        if (taskResult.isSuccessful) {
             context.startActivity(Intent(context, MainActivity()::class.java))
             (context as Activity).finish()
         }

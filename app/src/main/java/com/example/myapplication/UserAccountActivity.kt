@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -76,30 +75,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import coil.compose.AsyncImage
+import com.example.myapplication.classes.databases.FireStoreDatabase
+import com.example.myapplication.classes.databases.NotificationsDatabase
+import com.example.myapplication.classes.databases.StorageDatabase
 import com.example.myapplication.data_classes.NewUserCredentials
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.UploadTask
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
 
 class UserAccountActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyApplicationTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    AccountForm()
-                }
+            // A surface container using the 'background' color from the theme
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                AccountForm()
             }
         }
     }
@@ -108,11 +101,14 @@ class UserAccountActivity : ComponentActivity() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AccountForm() {
-    var fnameTxt: String by remember { mutableStateOf("") }
-    var lnameTxt: String by remember { mutableStateOf("") }
-    var moreTxt:String by remember { mutableStateOf("") }
-    var phone: String by remember { mutableStateOf("") }
-    var profImage: String by remember { mutableStateOf("") }
+    var firstnameTxt: String by remember { mutableStateOf("") }
+    var lastnameTxt: String by remember { mutableStateOf("") }
+    var moreInfoAboutUserTxt:String by remember { mutableStateOf("") }
+    var phoneNumberTxt: String by remember { mutableStateOf("") }
+    var profImageUriTxt: String by remember { mutableStateOf("") }
+    var profileImageJpg: String by remember {
+        mutableStateOf("")
+    }
     var gender: String by remember { mutableStateOf("Male") }
 
     Row(
@@ -152,8 +148,10 @@ fun AccountForm() {
 
             Spacer(modifier = Modifier.padding(8.dp))
 
-            PhotoSelection { data -> profImage = data }
-            Log.d("profImage",profImage)
+            PhotoSelectionForNewUser { imageUri, imageJpg ->
+                profImageUriTxt = imageUri
+                profileImageJpg = imageJpg
+            }
 
             Spacer(modifier = Modifier.padding(8.dp))
 
@@ -161,7 +159,7 @@ fun AccountForm() {
             FirstNameField(
                 value ="firstname",
                 onChange = { data ->
-                    fnameTxt = data
+                    firstnameTxt = data
                 },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -170,7 +168,7 @@ fun AccountForm() {
             LastNameField(
                 value = "lastname",
                 onChange = { data ->
-                    lnameTxt = data
+                    lastnameTxt = data
                 },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -179,7 +177,7 @@ fun AccountForm() {
             WhoAreYouField(
                 value = "who are you",
                 onChange = { data ->
-                    moreTxt = data
+                    moreInfoAboutUserTxt = data
                 },
                 onSubmit = {},
                 modifier = Modifier.fillMaxWidth(),
@@ -189,7 +187,7 @@ fun AccountForm() {
             PhoneNumberField(
                 value = "phone number",
                 onChange = { data ->
-                    phone = data
+                    phoneNumberTxt = data
                 },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -212,48 +210,54 @@ fun AccountForm() {
             }
 
             val currentContext = LocalContext.current
-            FilledButton(onSubmit = {}, profImage,fnameTxt,lnameTxt,phone,gender,moreTxt,currentContext)
+//            Log.d("profImageUriTxt:",profImageUriTxt.toString())
+            FilledButtonForNewUser(onSubmit = {}, profImageUriTxt, profileImageJpg, firstnameTxt, lastnameTxt, phoneNumberTxt, gender, moreInfoAboutUserTxt, currentContext)
         }
     }
 
 }
 
 @Composable
-fun FilledButton(
+private fun FilledButtonForNewUser(
     onSubmit: (String) -> Unit,
     profImage: String,
-    fnameTxt: String,
-    lnameTxt: String,
-    phone: String,
+    profileImageJpg: String,
+    firstnameTxt: String,
+    lastnameTxt: String,
+    phoneNumberTxt: String,
     gender: String,
-    moreTxt: String,
+    moreInfoAboutUserTxt: String,
     currentContext: Context
 ) {
-    Button(onClick = {
-        onSubmit(profImage, fnameTxt, lnameTxt, phone, gender, moreTxt)
-        currentContext.startActivity(Intent(currentContext, LoginActivity::class.java))
+    Button(
+        onClick = {
+            onSubmit(profImage,profileImageJpg, firstnameTxt, lastnameTxt, phoneNumberTxt, gender, moreInfoAboutUserTxt)
+            currentContext.startActivity(Intent(currentContext, LoginActivity::class.java))
 //        (context as Activity).finish()
-    }) {
+        }
+    ) {
         Text(text = "Submit")
     }
 }
 
 private fun onSubmit(
-    profImage: String,
-    fnameTxt: String,
-    lnameTxt: String,
-    phone: String,
+    profImageTxt: String,
+    profileImageJpg: String,
+    firstnameTxt: String,
+    lastnameTxt: String,
+    phoneNumberTxt: String,
     gender: String,
-    moreTxt: String
+    moreInfoAboutUserTxt: String
 ) {
     val userAuth = FirebaseAuth.getInstance()
     val newUserCredentials = NewUserCredentials(
-        profImage.toUri(),
-        fnameTxt,
-        lnameTxt,
-        phone,
+        profImageTxt.toUri(),
+        profileImageJpg,
+        firstnameTxt,
+        lastnameTxt,
+        phoneNumberTxt,
         gender,
-        moreTxt,
+        moreInfoAboutUserTxt,
         userAuth.currentUser!!.uid,
         userAuth.currentUser!!.email.toString()
     )
@@ -268,6 +272,7 @@ fun PhoneNumberField(
     label: String = "phone number",
     placeholder: String = "What's Your Number."
 ) {
+
     var phoneNumberText: String by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
     val inputStyle = remember {
@@ -277,6 +282,7 @@ fun PhoneNumberField(
             end = Offset(0.0f, 100.0f)
         )
     }
+
     val phoneNumberIcon = @Composable {
         Icon(
             Icons.Default.ContactPhone,
@@ -284,6 +290,7 @@ fun PhoneNumberField(
             tint = MaterialTheme.colorScheme.primary
         )
     }
+
     TextField(
         value = phoneNumberText,
         onValueChange = {
@@ -371,6 +378,7 @@ fun LastNameField(
     var lastnameText by remember {
         mutableStateOf("")
     }
+
     val inputStyle = remember {
         Brush.linearGradient(
             colors = listOf(Color.Red, Color.Green, Color.Blue),
@@ -414,10 +422,9 @@ fun LastNameField(
 }
 
 @Composable
-fun PhotoSelection(onGetPath: (String) -> Unit) {
+private fun PhotoSelectionForNewUser(onGetPath: (String, String) -> Unit) {
 
     var isClicked by remember { mutableStateOf(false) }
-
     var imageUri by remember { mutableStateOf("") }
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
@@ -425,9 +432,13 @@ fun PhotoSelection(onGetPath: (String) -> Unit) {
         onResult = { uri ->
             // This is the original path,but need a new one for Firebase
             imageUri = uri.toString()
-            val randomUri: String = UUID.randomUUID().toString()
-            onGetPath(imageUri)
+//            val randomUri: String = UUID.randomUUID().toString()
+            val imagePathList: List<String> = imageUri.split('/').toList()
+            val imageJpg: String = imagePathList[imagePathList.size - 1] + ".jpg"
+            onGetPath(imageUri, imageJpg)
             isClicked = !isClicked
+//            Log.d("imageUri", imageUri)
+//            Log.d("imageJpg", imageJpg)
         }
     )
 
@@ -439,13 +450,14 @@ fun PhotoSelection(onGetPath: (String) -> Unit) {
 //    val imageWhenNoneIsYetSelected = ImageVector.vectorResource(id = R.drawable.profile_picture)
 
     Box (
-        modifier = Modifier.fillMaxWidth()
-        .width(200.dp)
-        .background(
-            Color.LightGray.copy(alpha = .5f),
-            RoundedCornerShape(8.dp)
-        )
-        .padding(4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .width(200.dp)
+            .background(
+                Color.LightGray.copy(alpha = .5f),
+                RoundedCornerShape(8.dp)
+            )
+            .padding(4.dp),
     ) {
         Row (
             modifier = Modifier.fillMaxWidth(),
@@ -472,7 +484,8 @@ fun PhotoSelection(onGetPath: (String) -> Unit) {
                     isClicked = !isClicked
                     launchPhotoPicker()
                 },
-                modifier = Modifier.size(50.dp, 50.dp)
+                modifier = Modifier
+                    .size(50.dp, 50.dp)
                     .offset {
                         IntOffset(-offsetInPx, offsetInPx)
                     }
@@ -487,7 +500,8 @@ fun PhotoSelection(onGetPath: (String) -> Unit) {
                     imageVector = Icons.Rounded.PhotoCamera,
                     contentDescription = "Add photo",
                     tint = Color.LightGray,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .size(50.dp, 50.dp),
                 )
             }
@@ -495,126 +509,40 @@ fun PhotoSelection(onGetPath: (String) -> Unit) {
     }
 }
 
-private fun setRealtimeDatabase(newUserCredentials: NewUserCredentials) {
-    /*Create a new user in realtime db.
-    * pre: newUserCredentials is a user.
-    * post: New user added to realtime db.*/
-    
-    val dateFormatter: DateTimeFormatter? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")
-    } else {
-        null
-    }
-    val now: LocalDateTime? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        LocalDateTime.now()
-    } else {
-        null
-    }
-    val date: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        dateFormatter!!.format(now)
-    } else ({
-        null
-    }).toString()
-
-    // Add notification of the new user to db.
-    val m = HashMap<String, Any>()
-    m["firstname"] = newUserCredentials.fname
-    m["lastname"] = newUserCredentials.lname
-    m["userId"] = newUserCredentials.userId
-    m["userImageUri"] = newUserCredentials.uImage.toString()
-    m["welcome"] = "welcome ${newUserCredentials.fname} ${newUserCredentials.lname}"
-    m["date"] = date
-
-    // Notifications instance.
-    val realtimeDB = FirebaseDatabase.getInstance().getReference()
-    val notificationId: String = UUID.randomUUID().toString()
-    realtimeDB.child("Notifications")
-        .child(newUserCredentials.userId)
-        .child(notificationId)
-        .setValue(m)
-}
-
-private fun setDatabases(newUserCredentials: NewUserCredentials) {
+private fun setDatabases(user: NewUserCredentials) {
     /*Store user info in storage, real time, and cloud databases.
     * pre: newCredentials is the user object.
     * post: user added to storage (for uer profile image),
     *       real time for notifications, and
-    *       cloud for user info to be stored.*/
-
-    val storageDB = FirebaseStorage.getInstance().getReference()
-    val firstname: String = newUserCredentials.fname
-    val lastname: String = newUserCredentials.lname
-    val uri: Uri? = newUserCredentials.uImage
-    val uname: String = firstname+lastname
-
+    *       cloud for user info to be stored. */
+    
     val currentUser = FirebaseAuth.getInstance()
-
+    
     // Storage database for user profile image.
-    val storagePath = storageDB
-        .child(currentUser.uid ?: "storage_of_$uname")
-        .child("profile_images")
-        .child(uri.toString()+".jpg")
+    val storage = StorageDatabase()
+    // Path for all images of user
+    val pathOne: String = currentUser.uid +
+            "/all_profile_images/" +
+            user.userProfileImageImage.toString()+".jpg"
+    // Path for current profile image
+    val pathTwo: String = currentUser.uid +
+            "/current_profile_image/" +
+             user.userProfileImageImage.toString() + ".jpg"
+    // Set storage
+    storage.setImageToStorage(path = pathOne, imageJpgFile = user.userProfileImageImage!!)
+    storage.setImageToStorage(path = pathTwo, imageJpgFile = user.userProfileImageImage!!)
 
-    // content://media/picker/0/com.android.providers.media.photopicker/media/1000017384
-    Log.d("uImage",uri.toString())
-    Log.d("path",storagePath.path)
-    Log.d("storage",storagePath.toString())
-
-    // Cloud database for user info and new object.
-    storagePath.putFile(uri!!)
-        .addOnCompleteListener(newUserCredentials)
 
     // Realtime database for notifications.
-    setRealtimeDatabase(newUserCredentials)
+    val notifications = NotificationsDatabase()
+    notifications.setNotifications("Welcome ", user)
 
+    val firestore = FireStoreDatabase(user)
+    firestore.setFirestoreDatabase()
 }
 
-private fun UploadTask.addOnCompleteListener(newUserCredentials: NewUserCredentials) {
-    /*Create a new user in cloud db.
-    * pre: newUserCredentials is a user.
-    * post: New user added to cloud db.*/
-
-    // https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/storage_of_ii%2Fprofile_images%2Fcontent%3A%2Fmedia%2Fpicker%2F0%2Fcom.android.providers.media.photopicker%2Fmedia%2Fprofile_picture.png?alt=media&token=b3f8771e-7217-46b0-a3c5-b9a1b3888b3f
-    // https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/H7Wdogh6JsQFyf4gSn0KEBc6x5K2%2Fprofile_images%2Fcontent%3A%2Fmedia%2Fpicker%2F0%2Fcom.android.providers.media.photopicker%2Fmedia%2F1000017472.jpg?alt=media&token=9ae8a475-6e7b-4aab-a651-758ce6121181
-    addOnCompleteListener { taskResult ->
-//        //com.google.firebase.storage.UploadTask@13a9836
-//        Log.d("taskResult:",taskResult.toString())
-        if (taskResult.isSuccessful) {
-//            // content://media/picker/0/com.android.providers.media.photopicker/media/1000017865
-//            Log.d("newU", newUserCredentials.uImage.toString())
-            taskResult.addOnSuccessListener { taskSnapshot ->
-//                // com.google.firebase.storage.UploadTask$TaskSnapshot@2a100a4
-//                Log.d("taskSnapshot:",taskSnapshot.toString())
-//                // /KlFmro5VyqYeclOndH3IEIU4kOY2/profile_images/content:/media/picker/0/com.android.providers.media.photopicker/media/1000017865.jpg
-//                Log.d("taskSnapshot",taskSnapshot.storage.path)
-//                // com.google.android.gms.tasks.zzw@f976e0d
-//                Log.d("task2",taskSnapshot.storage.downloadUrl.toString())
-                taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
-//                    //tagSocket(143) with statsTag=0xffffffff, statsUid=-1
-//                    Log.d("it.path",uri.path.toString())
-
-                    // Make the user to be set in cloud db.
-                    val m: HashMap<String, Any> = HashMap()
-                    m["firstname"] = newUserCredentials.fname
-                    m["lastname"] = newUserCredentials.lname
-                    m["email"] = newUserCredentials.email
-                    m["phone"] = newUserCredentials.num
-                    m["gender"] = newUserCredentials.gender
-                    m["moreInfo"] = newUserCredentials.moreTxt
-                    m["profileImage"] = taskSnapshot.storage.path// newUserCredentials.uImage.toString()
-
-                    // Create user in cloud firebase.
-                    val cloudDB = FirebaseFirestore.getInstance()
-                    cloudDB.collection("Users")
-                        .document(newUserCredentials.userId)
-                        .set(m)
-                }
-            }
-        }
-    }
-}
 @Composable
-fun ImageLayoutView(selectedImages: List<Uri?>) {
+private fun ImageLayoutView(selectedImages: List<Uri?>) {
     LazyRow {
         items(selectedImages) { uri ->
             AsyncImage(
@@ -631,7 +559,7 @@ fun ImageLayoutView(selectedImages: List<Uri?>) {
 }
 
 @Composable
-fun FirstNameField(
+private fun FirstNameField(
     value: String,
     onChange: (String) -> Unit,
     modifier: Modifier,

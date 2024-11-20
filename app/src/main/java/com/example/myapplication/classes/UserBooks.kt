@@ -8,8 +8,8 @@ class UserBooks {
 
     fun getBooks(): MutableSet<Book> {
         /**Generating a random list of books that will be used as a fake library for testing.*/
-        val randomNumber: Int = Random.nextInt(0, 6)
-        var i: Int = 0
+        val randomNumber: Int = Random.nextInt(4, 20)
+        var i = 0
         val booksOfUser: MutableSet<Book> = mutableSetOf()
         while (i < randomNumber) {
             booksOfUser.add(allBooksInLibrary[Random.nextInt(0,50)])

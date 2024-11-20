@@ -15,6 +15,20 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
+            android:name=".mainactivityscomponents.BestSellersActivity"
+            android:exported="false"
+            android:label="@string/title_activity_best_sellers"
+            android:theme="@style/Theme.MyApplication" />
+        <activity
+            android:name=".ClickedBookActivity"
+            android:exported="false"
+            android:label="@string/title_activity_clicked_book"
+            android:theme="@style/Theme.MyApplication" /> <!-- <activity -->
+        <!-- android:name=".test.ui.theme.ClickedBookActivity" -->
+        <!-- android:exported="false" -->
+        <!-- android:label="@string/title_activity_clicked_book" -->
+        <!-- android:theme="@style/Theme.MyApplication" /> -->
+        <activity
             android:name=".test.ui.ViewAllActivity"
             android:exported="false"
             android:label="@string/title_activity_view_all"
@@ -23,6 +37,11 @@
             android:name=".UpdateUserAccountActivity"
             android:exported="false"
             android:label="@string/title_activity_update_user_account"
+            android:theme="@style/Theme.MyApplication" />
+        <activity
+            android:name=".mainactivityscomponents.ViewAllActivity"
+            android:exported="false"
+            android:label="@string/title_activity_view_all"
             android:theme="@style/Theme.MyApplication" />
         <activity
             android:name=".UserAccountActivity"

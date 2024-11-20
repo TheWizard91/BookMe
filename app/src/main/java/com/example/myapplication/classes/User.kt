@@ -40,7 +40,7 @@ class User {
     }
 
     fun getUser() {
-        /*TODO: the user has empty values, but in the callback it is not the case (see comments). Fix it.*/
+        /*TODO: Same issue as the one in the main activity --  can't retrieve data outside of the listener. Fix it.*/
         firebaseDatabase()
         Log.d("userInGetUser",firebaseDatabase().toString())//empty
     }
