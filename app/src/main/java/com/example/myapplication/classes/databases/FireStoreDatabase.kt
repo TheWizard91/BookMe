@@ -1,14 +1,17 @@
 package com.example.myapplication.classes.databases
 
-import android.util.Log
 import androidx.core.net.toUri
 import com.example.myapplication.classes.Book
 import com.example.myapplication.data_classes.NewUserCredentials
+import com.example.myapplication.logMessage
 import com.google.firebase.firestore.FirebaseFirestore
 
-class FireStoreDatabase(
-    var user: NewUserCredentials
-) {
+class FireStoreDatabase(var user: NewUserCredentials) {
+
+    /**Firebase object.
+     * pre: See constructor.
+     * post: Set, modify, and delete tables in Firebase.*/
+
     // This is needed for book table.
     constructor(
         firstname: String = "",
@@ -30,7 +33,11 @@ class FireStoreDatabase(
     private val cloudDB = FirebaseFirestore.getInstance()
 
     internal fun setFirestoreDatabase() {
-        // Make the user to be set in cloud db.
+
+        /**Make the user to be set in cloud db.
+         * pre: ---.
+         * post: A new user is on the DB. */
+
         val m: HashMap<String, Any> = HashMap()
         m["firstname"] = user.firstname
         m["lastname"] = user.lastname
@@ -45,10 +52,17 @@ class FireStoreDatabase(
         cloudDB.collection("Users")
             .document(user.userId)
             .set(m)
+        logMessage("userId",user.userId)
     }
 
     internal fun updateFirestoreDatabase () {
-        cloudDB.collection("Users")
+
+        /**Update User's info in Firebase.
+         * pre: ---.
+         * post: User's info is changed(updated.)*/
+
+        cloudDB
+            .collection("Users")
             .document(user.userId)
             .update(
                 "firstname", user.firstname,
@@ -61,7 +75,13 @@ class FireStoreDatabase(
             )
     }
 
-    private fun setBookTable (book: Book) {
+    private fun setLikedBookTable (book: Book) {
+
+        /**This method is addLikes' helper.
+         * It sets the table of the newly lied book.
+         * pre: book is the clicked book.
+         * post: A new book is added to the Likes table.*/
+
         val mapOfBook: Map<String, String> = mapOf(
             "id" to book.getId().toString(),
             "title" to book.getTitle(),
@@ -75,35 +95,28 @@ class FireStoreDatabase(
             "longDescription" to book.getLongDescription(),
             "rates" to book.getRates().toString()
         )
-        cloudDB.document("Likes/${book.getId()}/")
+
+        cloudDB
+            .document("Likes/${ user.userId }/${ user.firstname }' s/${ book.getId() }/")
             .set(mapOfBook)
-//            .addOnCompleteListener {
-////                Log.d("apple5", "Book in db removing: ${book.getTitle()}")
-//            }.addOnFailureListener { exception ->
-//                Log.d("setBookError", exception.toString())
-//            }
     }
     
     internal fun likesCheck(book: Book, onLikeUpdateCallback: (Boolean) -> Unit) {
 
         /**Check if book is already liked.
          * pre: book is a book.
-         * post: like button will be red or black according to the lies table on db.*/
+         * post: Like button will be red or black according to the lies table on db.*/
         
         cloudDB
-            .document("Likes/${book.getId()}/")
+            .document("Likes/${ user.userId }/${ user.firstname }' s/${ book.getId() }/")
             .get()
             .addOnSuccessListener {  documentSnapshot ->
-                if (documentSnapshot.exists()) {
-//                    Log.d("apple0", "Book already exists.")
+                if (documentSnapshot.exists())
                     onLikeUpdateCallback(true)
-                } else {
+                else
                     onLikeUpdateCallback(false)
-                }
-            }.addOnFailureListener { exception -> 
-                Log.d("likesCheckError",exception.toString())
-                onLikeUpdateCallback(false)
             }
+            .addOnFailureListener { }
     }
 
     internal fun likesHandler(book: Book, likeStatus: Boolean, onLikeUpdateCallback: (Boolean) -> Unit) {
@@ -125,19 +138,28 @@ class FireStoreDatabase(
     }
 
     private fun addLike(book: Book) {
-        setBookTable(book)
+
+        /**This method is the helper of likesHandler method.
+         * pre: book is the liked book.
+         * post: calling the helper method setLikedBookTable.*/
+
+        setLikedBookTable(book)
     }
 
     private fun removeLike(book: Book) {
+
+        /**This is likesHandler's helper.
+         * pre: book is the book unliked.
+         * post: Removed the liked book from DB.*/
+
         cloudDB
             .collection("Likes")
+            .document(user.userId)
+            .collection("${ user.firstname }' s")
             .document(book.getId().toString())
             .delete()
-            .addOnSuccessListener {
-                Log.d("apple4", "Removed book: ${book.getTitle()}")
-            }.addOnFailureListener { exception ->
-                Log.d("removeError", exception.toString())
-            }
+            .addOnSuccessListener { }
+            .addOnFailureListener { }
     }
 
 }

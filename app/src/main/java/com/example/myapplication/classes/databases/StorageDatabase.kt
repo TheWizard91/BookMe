@@ -4,7 +4,6 @@ import android.net.Uri
 import android.util.Log
 import com.example.myapplication.classes.Book
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.serialization.json.Json
 
 class StorageDatabase {
 
@@ -13,7 +12,7 @@ class StorageDatabase {
     private val storageDB = FirebaseStorage.getInstance().getReference()
 
     internal fun setImageToStorage (path: String, imageJpgFile: Uri) {
-        /*Create a new user in cloud db.
+        /**Create a new user in cloud db.
         * pre: path is a uri path to where the image will be stored.
         *      imagePjgFIle is the file.
         * post: New file added to storage fb.*/
@@ -39,32 +38,30 @@ class StorageDatabase {
     }
 
     internal fun getBooksInStore (path: String, onALlBooksCallback: (List<Book>) -> Unit) {
-        var jsonFileFromStorage = storageDB.child(path)//com.google.android.gms.tasks.zzw@c65e7c0
-            .downloadUrl
-            .addOnCompleteListener { taskUri ->
-                if (taskUri.isSuccessful) {
-                    val downloadUri: Uri = taskUri.result
-                    Log.d("downloadUri", downloadUri.path.toString())
-                    val fileUrlPath = downloadUri.toString()
-                    Log.d("fileUrlPath",fileUrlPath)
-//                    val jsonString =  readJSONFile()
-                    val json = Json { ignoreUnknownKeys = true }
-//                    val books = json.de
-                } else {
-                    Log.d("ErrorDownloadUri", "did not work")
-                }
-            }
+//        var jsonFileFromStorage = storageDB.child(path)//com.google.android.gms.tasks.zzw@c65e7c0
+//            .downloadUrl
+//            .addOnCompleteListener { taskUri ->
+//                if (taskUri.isSuccessful) {
+//                    try {
+//                        val downloadUri: Uri = taskUri.result
+//                        // /v0/b/bookme-dc582.appspot.com/o/book_store_repository/books_in_store/books.json
+//                        Log.d("downloadUri", downloadUri.path.toString())
+//                        // https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fbooks_in_store%2Fbooks.json?alt=media&token=be13bfb2-1237-4f6d-ab17-8477c3307e3b
+//                        val fileUrlPath = downloadUri.toString()
+//                        Log.d("fileUrlPath",fileUrlPath)
+//                        // https:/firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fbooks_in_store%2Fbooks.json?alt=media&token=be13bfb2-1237-4f6d-ab17-8477c3307e3b
+//                        val downloadedFile = File(fileUrlPath).readText()
+//                        Log.d("downloadedFile",downloadedFile.toString())
+////                    val json = Json { ignoreUnknownKeys = true }
+////                    val books = json.decodeFromJsonElement()
+//                    } catch (e: Exception) {
+//                        Log.d("FileError", e.message.toString())
+//                    }
+//                } else {
+//                    Log.d("ErrorDownloadUri", "did not work")
+//                }
+//            }
     }
-
-//    private fun readJsonFile(): String {
-//        // If the JSON file is in the assets folder:
-//        val inputStream = assets.open("data.json")
-//        return inputStream.bufferedReader().use { it.readText() }
-//
-//        // If the JSON file is in the local file system:
-//        // val file = File("path/to/your/file.json")
-//        // return file.readText()
-//    }
 
     internal fun getUserProfileImageFromStorage(path: String, onSetUserProfileImageURLCallback: (String) -> Unit){
 

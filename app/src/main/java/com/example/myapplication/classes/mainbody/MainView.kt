@@ -10,7 +10,7 @@ import com.example.myapplication.classes.mainbody.lowerbody.BestSellersView
 import com.example.myapplication.classes.mainbody.upperbody.MyLibraryView
 import com.example.myapplication.data_classes.MyStateAndViewData
 
-class MainView {
+class MainView() {
 
     /**pre:---.
      * post:displays the view of main body/home.*/
@@ -20,10 +20,11 @@ class MainView {
         context: Context,
         user: Map<String, String>,
         uid: String,
-        userOwnedBooks: List<Book>
+        userOwnedBooks: List<Book>,
+        mapOfUser: MutableMap<String, String>
     ) {
         // If view all and see more button are not pressed display the two main view
-        BothViewsModular(context, user, uid, userOwnedBooks)
+        BothViewsModular(context, user, uid, userOwnedBooks, mapOfUser)
     }
 
     @Composable
@@ -31,9 +32,10 @@ class MainView {
         context: Context,
         user: Map<String, String>,
         uid: String,
-        userOwnedBooks: List<Book>
+        userOwnedBooks: List<Book>,
+        mapOfUser: MutableMap<String, String>
     ) {
-        MyLibraryAndBestSellersViews(context, user, uid, userOwnedBooks)
+        MyLibraryAndBestSellersViews(context, user, uid, userOwnedBooks, mapOfUser)
     }
 
     @Composable
@@ -41,7 +43,8 @@ class MainView {
         context: Context,
         user: Map<String, String>,
         uid: String,
-        userOwnedBooks: List<Book>
+        userOwnedBooks: List<Book>,
+        mapOfUser: MutableMap<String, String>
     ) {
 
         val bool: Boolean by remember { mutableStateOf(false) }
@@ -67,7 +70,8 @@ class MainView {
             viewOfViewAll = view,
             myStatesAndView = myStatesAndView,
             uid = uid,
-            userOwnedBooks = userOwnedBooks
+            userOwnedBooks = userOwnedBooks,
+            mapOfUser = mapOfUser
         )
 
         bestSellersView.BestSellers(

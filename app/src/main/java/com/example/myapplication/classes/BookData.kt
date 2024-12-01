@@ -12,6 +12,7 @@ class Book(
     longDescription: String,
     coverImage: String,
     localCoverImagePath: Int,
+    stockCoverImagePath: String,
     price: Int,
     rates: Int
 ) {
@@ -25,6 +26,7 @@ class Book(
         "Fake Long Description",
         "No Image",
         R.drawable.profile_picture,
+        "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
         0,
         0
     )
@@ -38,6 +40,7 @@ class Book(
     private var longDescription: String = ""
     private var coverImage: String = ""
     private var localCoverImagePath: Int = 0
+    private var stockCoverImagePath: String = ""
     private var price: Int = 0
     private var rates: Int = 0
 
@@ -51,6 +54,7 @@ class Book(
         this.longDescription = longDescription
         this.coverImage = coverImage
         this.localCoverImagePath = localCoverImagePath
+        this.stockCoverImagePath = stockCoverImagePath
         this.price = price
         this.rates = rates
     }
@@ -73,6 +77,8 @@ class Book(
     fun getCoverImage(): String { return coverImage }
     fun setLocalCoverImagePath(localCoverImagePath: Int) { this.localCoverImagePath = localCoverImagePath }
     fun getLocalCoverImagePath(): Int { return localCoverImagePath }
+    fun setStockCoverImagePath(stockCoverImagePath: String) { this.stockCoverImagePath = stockCoverImagePath }
+    fun getStockCoverImagePath(): String { return stockCoverImagePath }
     fun setPrice(price: Int) { this.price = price }
     fun getPrice(): Int { return price}
     fun setRates(rates: Int) { this.rates = rates }

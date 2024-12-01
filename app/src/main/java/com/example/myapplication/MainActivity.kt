@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import com.example.myapplication.classes.Book
 import com.example.myapplication.classes.databases.StorageDatabase
 import com.example.myapplication.classes.navclasses.NavigationBarView
+import com.example.myapplication.data_classes.BookData
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
@@ -46,6 +47,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.delay
+import java.io.BufferedReader
+import java.io.File
 
 class MainActivity : ComponentActivity() {
 
@@ -75,7 +78,7 @@ class MainActivity : ComponentActivity() {
         var listOfMaps: List<Map<String, String>> = emptyList<Map<String, String>>().toMutableStateList()
         var listOfMapsOfLikes: List<Map<String, String>> = emptyList<Map<String, String>>().toMutableStateList()
         var listOfBooksOwnedByTheUser: List<Map<String, String>> = emptyList<Map<String, String>>().toMutableStateList()
-        var listOfAllBooks: List<Book> = emptyList<Book>().toMutableStateList()
+        var listOfAllBooks: List<BookData> = emptyList<BookData>().toMutableStateList()
 
         setContent {
 
@@ -91,9 +94,11 @@ class MainActivity : ComponentActivity() {
                     setStorageDatabase()
                 }
 
-                getBooksInRepository { books ->
-//                    listOfAllBooks = books
-                }
+                // Get books from storage
+//                getBooksInRepository { books ->
+////                    listOfAllBooks = books
+//                }
+
                 // Notifications
                 getNotifications {  listOfNotificationMaps ->
                     listOfMaps = listOfNotificationMaps
@@ -115,10 +120,10 @@ class MainActivity : ComponentActivity() {
                     isDataLoaded = true
                 }
 
-//                if (isDataLoaded)
-//                    MainBody(mapOfUser, listOfMaps, userId, listOfMapsOfLikes)
-//                else
-//                    Loading()
+                if (isDataLoaded)
+                    MainBody(mapOfUser, listOfMaps, userId, listOfMapsOfLikes)
+                else
+                    Loading()
 
             }
         }
@@ -300,6 +305,12 @@ fun MainContent(
     val cxt: Context = LocalContext.current
 
     val navigationBarView = NavigationBarView()
+
+    val booksInLibrary: MutableList<BookData> = emptyList<BookData>().toMutableList()
+    readJsonFileFromTheAssetsFolder(cxt, "assets/books.json") { books->
+//            bestSellerBookState[0]=books
+    }
+
     navigationBarView.InitialViewOfNavigationBarView(
         cxt = cxt,
         mapOfUser = user,
@@ -329,6 +340,135 @@ private fun Loading () {
         )
     }
 }
+
+private fun readJsonFileFromTheAssetsFolder (context: Context, path: String, onGetBooksFromJsonFileCallback: (List<BookData>) -> Unit) {
+    // TODO: Cannot open the json file (not only locally, but in db too), figure out why.
+    val identifier = "ReadJSON"
+    try {
+
+//        val file = context.assets.open(path)
+//        logMessage(identifier, "$file")
+
+//        val bufferReader = BufferedReader(InputStreamReader(file))
+
+        val bufferReader: BufferedReader = File(path).bufferedReader()
+        val inputString = bufferReader.use { it.readText() }
+        logMessage("inputString",inputString)
+        val booksInLibrary: MutableList<MutableMap<String, String>> = emptyList<MutableMap<String, String>>().toMutableList()
+
+        bufferReader.useLines { lines ->
+
+            var id = 0
+            var title = ""
+            var author = ""
+            var publicationYear = 0
+            val genres: MutableList<String> = emptyList<String>().toMutableList()
+            var description = ""
+            var longDescription = ""
+            var coverImage = ""
+            var localCoverImagePath = ""
+            var stockCoverImagePath ="https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f"
+            var price = 0
+            var rates = 0
+            val subList: MutableList<String> = emptyList<String>().toMutableList()
+            val bookObject: MutableMap<String, String> = emptyMap<String, String>().toMutableMap()
+
+            lines.forEach {  line ->
+//                logMessage("lineIs",line.toString())
+                if (line.contains("bookId")) {
+                    id = line.split(":", ",")[1].toInt()
+                    logMessage("myId", id.toString())
+//                    subList.add(id)
+//                    bookObject["id"] = id
+                }
+                if (line.contains("bookTitle")) {
+                    title = line.split(":")[1]
+                    logMessage("title", title)
+//                    subList.add(title)
+                    bookObject["title"] = title
+                }
+                if (line.contains("bookAuthor")) {
+                    author = line.split(":", ",")[1]
+                    logMessage("author", author)
+                    subList.add(author)
+                    bookObject["author"] = author
+                }
+                if (line.contains("bookPublicationYear")) {
+                    publicationYear = line.split(":", ",")[1].toInt()
+                    logMessage("publicationYear", publicationYear.toString())
+//                    subList.add(publicationYear)
+//                    bookObject["publicationYear"] = publicationYear
+                }
+                if (line.contains("bookGenres")) {
+                    logMessage("genres", line.split(":").toString())
+                    val split: List<String> = line.split(":","[","]",",")
+                    split.forEach {  str ->
+//                            logMessage("str",str)
+                        if (str != "genres")
+                            genres.add(str)
+                    }
+//                    subList.add(genres.toString())
+                    bookObject["genres"] = genres.toString()
+                }
+                if (line.contains("bookDescription")) {
+                    description = line.split(":")[1]
+                    logMessage("description", description)
+//                    subList.add(description)
+                    bookObject["description"] = description
+                }
+                if (line.contains("bookLongDescription")) {
+                    longDescription = line.split(":")[1]
+                    logMessage("longDescription", longDescription)
+//                    subList.add(longDescription)
+                    bookObject["longDescription"] = longDescription
+                }
+                if (line.contains("bookCoverImage")) {
+                    coverImage = line.split(":")[1]
+                    logMessage("coverImage", coverImage)
+//                    subList.add(coverImage)
+                    bookObject["coverImage"] = coverImage
+                }
+                if (line.contains("localCoverImagePath")) {
+                    localCoverImagePath = "0"
+//                    logMessage("localCoverImagePath", line.split(":")[1])
+//                    subList.add(localCoverImagePath)
+                    bookObject["localCoverImagePath"] = localCoverImagePath
+                }
+                if (line.contains("bookStockCoverImagePath")) {
+//                    logMessage("stockCoverImagePath", line.split(":")[1])
+                    stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f"
+//                    subList.add(stockCoverImagePath)
+                    bookObject["stockCoverImagePath"] = stockCoverImagePath
+                }
+                if (line.contains("bookPrice")) {
+                    price = line.split(":", ",")[1].toInt()
+                    logMessage("price", price.toString())
+//                    subList.add(price)
+//                    bookObject["price"] = price
+                }
+                if (line.contains("bookRates")) {
+                    rates = line.split(":")[1].toInt()
+                    logMessage("rates", rates.toString())
+//                    subList.add(rates)
+//                    bookObject["rates"] = rates
+                }
+                booksInLibrary.add(bookObject)
+//                    booksInLibrary.add(book)
+            }
+            val book = BookData(id, title, author, publicationYear, genres.toString(), description, longDescription, coverImage, localCoverImagePath, stockCoverImagePath, price, rates)
+            logMessage("[bookList]", book.toString())
+            logMessage("[bookObject]", bookObject.toString())
+        }
+//        Log.d(identifier, "$stringBuilder")
+        logMessage("[superList]",booksInLibrary.toString())
+    } catch (e: Exception) {
+        // Online json file.
+        // https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fbooks_in_store%2Fbooks.json?alt=media&token=be13bfb2-1237-4f6d-ab17-8477c3307e3b
+        logMessage("[FAILEDOPENINGFILE]", e.message.toString())
+        e.printStackTrace()
+    }
+}
+
 fun logMessage(tag: String, msg: String) {
     Log.d(tag, msg)
 }

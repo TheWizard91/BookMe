@@ -3,7 +3,6 @@ package com.example.myapplication
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -65,14 +64,11 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.myapplication.classes.Book
 import com.example.myapplication.classes.databases.FireStoreDatabase
+import com.example.myapplication.classes.databases.NotificationsDatabase
 import com.example.myapplication.mainactivityscomponents.BestSellersActivity
 import com.example.myapplication.objects.SampleBook
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
 import kotlin.random.Random
 
 class ClickedBookActivity : ComponentActivity() {
@@ -286,6 +282,7 @@ private fun BookView(
     val myText: String = book.getLongDescription()
     val firestoreDB = FireStoreDatabase(firstname, lastname, email, gender, phone, moreInfo, profileImageSerialNumber, profileImage, userProfileImageURL, uid)
     val currentUser = FirebaseAuth.getInstance().currentUser
+    val notifications = NotificationsDatabase()
     var pressed: Boolean by remember { mutableStateOf(false) }
     var likesButtonState: Boolean by remember { mutableStateOf(false) }
     var menuButtonState: Boolean by remember { mutableStateOf(false) }
@@ -307,6 +304,7 @@ private fun BookView(
                     .padding(all = 8.dp)
                     .wrapContentHeight()
             ) {
+
                 IconButton(
                     modifier = Modifier.weight(1f),
                     onClick = { backToParentActivity(context, parentActivity) },
@@ -316,10 +314,13 @@ private fun BookView(
                         contentDescription = "Back button",
                     )
                 }
+
                 Spacer(modifier = Modifier.weight(3f))
                 firestoreDB.likesCheck(book) { isBookLikedAlready ->
                     likesButtonState = isBookLikedAlready
                 }
+                notifications.isTheBookInNotificationsDB(book, firstname, lastname, uid, userProfileImageURL)
+
                 IconButton(
                     modifier = Modifier.weight(1f),
                     onClick = {
@@ -330,22 +331,26 @@ private fun BookView(
                             }
                             /** TODO: Check if the book was already liked (already in real time bd) so that
                              *   wed can add/delete it from the real time db (things to do in the following method).*/
-                            setNotificationsDBForLikedBooks(book, firstname, lastname, uid, userProfileImageURL)
+                            notifications.setNotificationsDBForLikedBooks(book, firstname, lastname, uid, userProfileImageURL)
                         }
                     }
                 ) {
                     LikesButtonHandler(likesButtonState, book, firstname, lastname, uid)
                 }
+
                 IconButton(
                     modifier = Modifier.weight(1f),
                     onClick = { /*TODO: Handle search button.*/ }
                 ) {
+
                     Icon (
                         imageVector = Icons.Filled.MoreVert,
                         contentDescription = "Back button"
                     )
                 }
+
             }
+
             Column (
                 modifier = Modifier
                     .fillMaxWidth()
@@ -353,6 +358,7 @@ private fun BookView(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
                 Card(
                    modifier = Modifier
                        .padding(
@@ -363,6 +369,7 @@ private fun BookView(
                        ),
                    shape = RoundedCornerShape(percent = 10)
                 ) {
+
                    AsyncImage(
                        modifier = Modifier
                            .size(100.dp, 150.dp)
@@ -377,8 +384,10 @@ private fun BookView(
                        error = painterResource(id = R.drawable.book_image),
                        alignment = Alignment.Center,
                    )
+
                 }
             }
+
             Column (
                 modifier = Modifier
                     .padding(all = 8.dp),
@@ -391,12 +400,14 @@ private fun BookView(
                     textAlign = TextAlign.Center,
                     color = Color.White
                 )
+
                 Text (
                     text = "by " + book.getAuthor(),
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     color = Color.Gray
                 )
+
                 Row (
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -412,6 +423,7 @@ private fun BookView(
                         }
                     }
                 }
+
             }
         }
         Column (
@@ -520,77 +532,6 @@ fun LikesButtonHandler(
     }
 }
 
-private fun setNotificationsDBForLikedBooks(
-    book: Book,
-    firstname: String,
-    lastname: String,
-    uid: String,
-    userProfileImageURL: String
-) {
-
-    /**Create a new user in realtime db.
-    * pre: newUserCredentials is a user.
-    * post: New user added to realtime db.*/
-
-    val dateFormatter: DateTimeFormatter? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")
-    } else {
-        null
-    }
-    val now: LocalDateTime? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        LocalDateTime.now()
-    } else {
-        null
-    }
-    val date: String = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        dateFormatter!!.format(now)
-    } else ({
-        null
-    }).toString()
-
-    // Add notification of the new user to db.
-    val m = HashMap<String, Any>()
-    m["userProfileImageURL"] = userProfileImageURL
-    m["firstname"] = firstname
-    m["lastname"] = lastname
-    m["userId"] = uid
-    m["message"] = firstname +
-            " " +
-            lastname +
-            " just liked " +
-            book.getTitle()
-    m["bookTitle"] = book.getTitle()
-    m["bookImageUri"] = book.getCoverImage()
-    m["date"] = date
-
-    // Notifications instance.
-    val realtimeDB = FirebaseDatabase.getInstance().getReference()
-    val notificationId: String = UUID.randomUUID().toString()
-    realtimeDB.child("Notifications")
-        .child(uid)
-        .child(notificationId)
-        .setValue(m)
-
-//    realtimeDB.child("Notifications")
-//        .child(uid)
-//        .get()
-//        .addOnSuccessListener { dataSnapshot ->
-//            if (!dataSnapshot.exists()) {
-//                // No book in db.
-//                Log.d("kiwi", "there is no book clicked under this user.")
-//                realtimeDB.child("Notifications")
-//                    .child(uid)
-//                    .child(notificationId)
-//                    .setValue(m)
-//            } else {
-//                // There are books in real time db.
-//                dataSnapshot.children.forEach { data ->
-//                    Log.d("cucumber", "Key: "+data.key.toString()+", value: "+data.value.toString())
-//                }
-//            }
-//        }
-}
-
 fun backToParentActivity(context: Context, parentActivity: String) {
     if (parentActivity == "MAIN_ACTIVITY") {
         context.startActivity(Intent(context, MainActivity()::class.java))
@@ -621,6 +562,7 @@ fun BookViewPreview() {
                         "Harper Lee always considered her book to be a simple love story. Today it is regarded as a masterpiece of American literature.",
                 coverImage = "https://i.pinimg.com/564x/b3/b6/5b/b3b65b82c7820c5cbc15a5fef871d68d.jpg",
                 localCoverImagePath = R.drawable.to_kill_a_mockingbird,
+                stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
                 price = Random.nextInt(10, 50),
                 rates = Random.nextInt(1, 5)
             ),

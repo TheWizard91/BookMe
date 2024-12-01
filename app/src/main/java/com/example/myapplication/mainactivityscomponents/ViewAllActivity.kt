@@ -9,7 +9,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,6 +33,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.rounded.StarRate
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFloatingActionButton
@@ -38,6 +41,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -54,6 +58,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -62,8 +67,10 @@ import coil.compose.AsyncImage
 import com.example.myapplication.MainActivity
 import com.example.myapplication.R
 import com.example.myapplication.classes.Book
-import com.example.myapplication.objects.UserBooksList
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.delay
 
 class ViewAllActivity : ComponentActivity() {
 
@@ -74,22 +81,44 @@ class ViewAllActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyApplicationTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    MainViewOfViewAll()
+            // A surface container using the 'background' color from the theme
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                val mapOfUser: MutableMap<String, String> = mutableMapOf("uid" to FirebaseAuth.getInstance().uid.toString())
+                // User info
+                getUserInfoFromDatabase (mapOfUser["uid"].toString()) { userMap ->
+                    mapOfUser.putAll(userMap)
                 }
+
+                MainViewOfViewAll(mapOfUser)
             }
         }
+    }
+
+    private fun getUserInfoFromDatabase (userId: String, callback: (MutableMap<String,String>) -> Unit) {
+        val m: MutableMap<String, String> = emptyMap<String,String>().toMutableMap()
+        val database: FirebaseFirestore = FirebaseFirestore.getInstance()
+
+        database
+            .collection("Users")
+            .document(userId)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    task.result.data!!.mapValues { entryInMap ->
+                        m[entryInMap.key] = entryInMap.value.toString()
+                    }
+                    callback(m)
+                }
+            }
     }
 }
 
 
 @Composable
-private fun MainViewOfViewAll() {
+private fun MainViewOfViewAll(mapOfUser: MutableMap<String, String>) {
     /**pre: ---.
      * post: modify the state of the screen based on user's activities.*/
 
@@ -97,11 +126,75 @@ private fun MainViewOfViewAll() {
     val configuration = LocalConfiguration.current
     var state: Boolean by remember { mutableStateOf(false) }
     var clickedBook: Book by remember { mutableStateOf(Book()) }
-    val userOwnedBooks = UserBooksList.listOfBooksOwnedByUser.toList()
+    val userOwnedBooks = emptyList<Book>()//UserBooksList.listOfBooksOwnedByUser.toList()
 
-    InitialViewOfViewAll(context, configuration, userOwnedBooks) { changeState, book ->
-        state = changeState
-        clickedBook = book
+    LaunchedEffect(Unit) {
+        delay(1000L)
+//        isDataLoaded = true
+    }
+
+    if (userOwnedBooks.isNotEmpty()) {
+        InitialViewOfViewAll(context, configuration, userOwnedBooks) { changeState, book ->
+            state = changeState
+            clickedBook = book
+        }
+    } else {
+        EmptyLibrary(context, mapOfUser)
+    }
+}
+
+@Composable
+private fun EmptyLibrary(context: Context, mapOfUser: MutableMap<String, String>) {
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { /* Handle the result if needed */ }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(8.dp)
+                .height(100.dp)
+                .fillMaxWidth(),
+            text = "No Books Owned Yet \uD83D\uDC47...",
+            fontSize = 32.sp,
+            textAlign = TextAlign.Center,
+            overflow = TextOverflow.Ellipsis,
+            color = Color.Magenta
+        )
+        Button(
+            onClick = {
+                val intent: Intent =
+                    Intent(context, BestSellersActivity::class.java).apply {
+                        // Pass data as an extra with the intent.
+                        putExtra("PARENT_ACTIVITY" ,"MAIN_ACTIVITY")
+                        putExtra("UID", mapOfUser["uid"])
+                        putExtra("FIRSTNAME", mapOfUser["firstname"])
+                        putExtra("Gender", mapOfUser["gender"])
+                        putExtra("PHONE", mapOfUser["phone"])
+                        putExtra(
+                            "PROFILE_IMAGE_SERIAL_NUMBER",
+                            mapOfUser["profileImageSerialNumber"]
+                        )
+                        putExtra("PROFILE_IMAGE", mapOfUser["profileImage"])
+                        putExtra("MORE_INFO", mapOfUser["moreInfo"])
+                        putExtra("EMAIL", mapOfUser["email"])
+                        putExtra("LASTNAME", mapOfUser["lastname"])
+                        putExtra(
+                            "USER_PROFILE_IMAGE_URL",
+                            mapOfUser["userProfileImageURL"]
+                        )
+                    }
+                // Start the activity using the launcher.
+                launcher.launch(intent)
+            }
+        ) {
+            Text(text = "Buy Books")
+        }
     }
 }
 
@@ -398,20 +491,7 @@ private fun showMessage(context: Context, message: String) {
 @Composable
 fun MainViewOfViewAllPreview() {
     MyApplicationTheme {
-        MainViewOfViewAll(
-//            mutableMapOf<String, String>(
-//                "uid" to "WsMlp82jsBUb1RVZpbfFX8EvnWz1",
-//                "firstname" to "sarah",
-//                "gender" to "Female",
-//                "phone" to "1",
-//                "profileImageSerialNumber" to "1000013835.jpg",
-//                "profileImage" to "content://media/picker/0/com.android.providers.media.photopicker/media/1000013835",
-//                "moreInfo" to "a beautiful 😍 🤩  woman",
-//                "email" to "a@a.com",
-//                "lastname" to "kaidanow",
-//                "userProfileImageURL" to "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/WsMlp82jsBUb1RVZpbfFX8EvnWz1%2Fcurrent_profile_image%2Fcontent%3A%2Fmedia%2Fpicker%2F0%2Fcom.android.providers.media.photopicker%2Fmedia%2F1000013835.jpg?alt=media&token=a0aafcb7-0cc3-44bb-99f4-cf5e2a3714a6"
-//            )
-        )
+        MainViewOfViewAll(emptyMap<String, String>().toMutableMap())
 //        MainViewOfViewAll(
 //            Book(
 //                id = 1,

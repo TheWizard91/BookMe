@@ -48,10 +48,8 @@ import com.example.myapplication.ClickedBookActivity
 import com.example.myapplication.R
 import com.example.myapplication.classes.Book
 import com.example.myapplication.data_classes.MyStateAndViewData
-import com.example.myapplication.logMessage
 import com.example.myapplication.objects.SampleBook
 import com.example.myapplication.showMessage
-import java.io.File
 
 class BestSellersView {
 
@@ -123,8 +121,6 @@ class BestSellersView {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 LazyRow {
                     items(books) { book ->
-                        testBooks(book)
-//                        testBooksTwo(book)
                         BookCardBottom(context, book, user, uid) { s, v ->
                             //TODO: Display book user wants to buy.
                         }
@@ -132,63 +128,6 @@ class BestSellersView {
                 }
             }
         }
-    }
-
-    private fun testBooksTwo(book: Book) {
-        try {
-            File("../").printWriter().use { file ->
-                file.write("id = " + book.getId().toString())
-                file.write("title = " + book.getTitle())
-                file.write("author = " + book.getAuthor())
-                file.write("publicationYear = " + book.getPublicationYear().toString())
-                file.write("genres = " + book.getGenres().toString())
-                file.write("description = " + book.getDescription())
-                file.write("longDescription = " + book.getLongDescription())
-                file.write("coverImage = " + book.getCoverImage())
-                file.write("localCoverImagePath = " + book.getLocalCoverImagePath().toString())
-                file.write("price = " + book.getPrice().toString())
-                file.write("rates = " + book.getRates().toString())
-                file.append("\n")
-            }
-        } catch (e: Exception) {
-            logMessage("fileError", e.toString())
-        }
-
-    }
-
-    private fun testBooks(book: Book) {
-//        val fileName: String = "/home/emmanuel/AndroidStudioProjects/BookMe/app/src/main/assets/set_books.txt"
-//        try {
-//            val file: File = File(fileName)
-//            logMessage("fileIs",file.isFile.toString())
-//            file.writeText("id = " + book.getId().toString())
-//            file.writeText("title = " +  book.getTitle())
-//            file.writeText("author = " + book.getAuthor())
-//            file.writeText("publicationYear = " + book.getPublicationYear().toString())
-//            file.writeText("genres = " + book.getGenres().toString())
-//            file.writeText("description = " + book.getDescription())
-//            file.writeText("longDescription = " + book.getLongDescription())
-//            file.writeText("coverImage = " + book.getCoverImage())
-//            file.writeText("localCoverImagePath = " + book.getLocalCoverImagePath().toString())
-//            file.writeText("price = " + book.getPrice().toString())
-//            file.writeText("rates = " + book.getRates().toString())
-//            file.appendText("\n")
-//        } catch (e: Exception) {
-//            logMessage("fileError", e.toString())
-//        }
-
-
-        logMessage("id", book.getId().toString())
-        logMessage("title", book.getTitle())
-        logMessage("author", book.getAuthor())
-        logMessage("publicationYear", book.getPublicationYear().toString())
-        logMessage("genres", book.getGenres().toString())
-        logMessage("description", book.getDescription())
-        logMessage("longDescription", book.getLongDescription())
-        logMessage("coverImage", book.getCoverImage())
-        logMessage("localCoverImagePath", book.getLocalCoverImagePath().toString())
-        logMessage("price", book.getPrice().toString())
-        logMessage("rates", book.getRates().toString())
     }
 
     @Composable
@@ -235,7 +174,7 @@ class BestSellersView {
                                 val intent: Intent =
                                     Intent(context, ClickedBookActivity::class.java).apply {
                                         // Pass data as an extra with the intent.
-                                        putExtra("PARENT_ACTIVITY" ,"MAIN_ACTIVITY")
+                                        putExtra("PARENT_ACTIVITY", "MAIN_ACTIVITY")
                                         putExtra("BOOK_NAME", book.getTitle())
                                         putExtra("UID", mapOfUser["uid"])
                                         putExtra("FIRSTNAME", mapOfUser["firstname"])

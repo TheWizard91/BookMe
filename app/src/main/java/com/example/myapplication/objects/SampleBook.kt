@@ -2,11 +2,10 @@ package com.example.myapplication.objects
 
 import com.example.myapplication.R
 import com.example.myapplication.classes.Book
-import kotlin.random.Random
 
 object SampleBook {
 
-    val books = listOf<Book>(
+    val books = listOf(
         Book(
             id = 1,
             title ="To Kill a Mockingbird",
@@ -22,8 +21,9 @@ object SampleBook {
                     "Harper Lee always considered her book to be a simple love story. Today it is regarded as a masterpiece of American literature.",
             coverImage = "https://i.pinimg.com/564x/b3/b6/5b/b3b65b82c7820c5cbc15a5fef871d68d.jpg",
             localCoverImagePath = R.drawable.to_kill_a_mockingbird,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 45,//Random.nextInt(10, 50),
+            rates = 5//Random.nextInt(1, 5)
         ),
         Book(
             id = 2,
@@ -47,8 +47,9 @@ object SampleBook {
                     " No one can deny the novel’s hold on the imaginations of whole generations, or the power of its admonitions—a power that seems to grow, not lessen, with the passage of time.",
             coverImage = "https://i.pinimg.com/564x/04/44/6c/04446c92480b149be2e02f7a4f520922.jpg",
             localCoverImagePath = R.drawable.nineteeneightyfour,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 22,//Random.nextInt(10, 50),
+            rates = 1//Random.nextInt(1, 5)
         ),
         Book(
             id = 3,
@@ -69,8 +70,9 @@ object SampleBook {
                     "With more than 1,700 titles, Penguin Classics represents a global bookshelf of the best works throughout history and across.",
             coverImage = "https://i.pinimg.com/564x/5c/12/6e/5c126ebc616400330587845a172c110d.jpg",
             localCoverImagePath = R.drawable.pride_and_prejudice,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 36,//Random.nextInt(10, 50),
+            rates = 4//Random.nextInt(1, 5)
         ),
         Book(
             id = 4,
@@ -96,8 +98,9 @@ object SampleBook {
                     "Share F. Scott Fitzgerald's beloved masterpiece with your friends. This timeless novel continues to be regarded as one of literature's greatest achievements. Grab a copy today and explore what makes The Great Gatsby so special!",
             coverImage = "https://i.pinimg.com/736x/11/91/8f/11918f3c356159ed09856eb1664f9bff.jpg",
             localCoverImagePath = R.drawable.the_great_gatsby,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 41,//Random.nextInt(10, 50),
+            rates = 2//Random.nextInt(1, 5)
         ),
         Book(
             id = 5,
@@ -115,8 +118,9 @@ object SampleBook {
                     "Much of Moby Dick was inspired by the 1821 work Narratives of the Wreck of the Whale-Ship Essex, which in turn inspired the 2015 movie In the Heart of the Sea, directed by Ron Howard and starring Chris Hemsworth.",
             coverImage = "https://i.pinimg.com/564x/7a/49/68/7a49682a4ddac9cefb030be8db35a6af.jpg",
             localCoverImagePath = R.drawable.moby_dick,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 29,//Random.nextInt(10, 50),
+            rates = 1//Random.nextInt(1, 5)
         ),
         Book(
             id = 6,
@@ -139,8 +143,9 @@ object SampleBook {
                     "Sympathetically packaged to reflect the classic look of the first edition, this new edition of the bestselling hardback will prove irresistible to collectors and new fans alike.",
             coverImage = "https://i.pinimg.com/564x/7b/6d/38/7b6d3896048f20a865b744ab69aaf216.jpg",
             localCoverImagePath = R.drawable.the_lord_of_the_rings,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 27,//Random.nextInt(10, 50),
+            rates = 3//Random.nextInt(1, 5)
         ),
         Book(
             id = 7,
@@ -163,8 +168,9 @@ object SampleBook {
                     "It is there for the reader who can handle it to keep.",
             coverImage = "https://i.pinimg.com/564x/4b/be/9c/4bbe9c695bd2c2005847108120df0612.jpg",
             localCoverImagePath = R.drawable.the_catcher_in_the_ray,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 13,//Random.nextInt(10, 50),
+            rates = 2//Random.nextInt(1, 5)
         ),
         Book(
             id = 8,
@@ -188,8 +194,9 @@ object SampleBook {
                     "Bilbo reluctantly joins their quest, unaware that on his journey to the Lonely Mountain he will encounter both a magic ring and a frightening creature known as Gollum.",
             coverImage = "https://i.pinimg.com/564x/fb/b0/74/fbb074b6a0674cb137b39d2b2acaf467.jpg",
             localCoverImagePath = R.drawable.the_hobit,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 48,//Random.nextInt(10, 50),
+            rates = 3//Random.nextInt(1, 5)
         ),
         Book(
             id = 9,
@@ -214,8 +221,9 @@ object SampleBook {
                     "©1964 Gabriel García Márquez (P)2013 Blackstone Audio",
             coverImage = "https://i.pinimg.com/564x/fb/6c/57/fb6c57be3005b5759370732f9831ecb0.jpg",
             localCoverImagePath = R.drawable.one_hundred_years_of_solitude,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 49,//Random.nextInt(10, 50),
+            rates = 4//Random.nextInt(1, 5)
         ),
         Book(
             id = 10,
@@ -233,8 +241,9 @@ object SampleBook {
                     "Revised edition: Previously published as War and Peace, this edition of War and Peace (AmazonClassics Edition) includes editorial revisions.",
             coverImage = "https://i.pinimg.com/736x/70/15/41/70154164a2967cc25fbac089e855db38.jpg",
             localCoverImagePath = R.drawable.war_and_peace,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 18,//Random.nextInt(10, 50),
+            rates = 3//Random.nextInt(1, 5)
         ),
         Book(
             id = 11,
@@ -249,8 +258,9 @@ object SampleBook {
                     "This audiobook is sure to delight both the classicist and the general listener and to captivate a new generation of Homer's students.",
             coverImage = "https://i.pinimg.com/564x/38/1a/4a/381a4abdc63125efd1e31f0cf27571a0.jpg",
             localCoverImagePath = R.drawable.the_oddysey,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 48,//Random.nextInt(10, 50),
+            rates = 5//Random.nextInt(1, 5)
         ),
         Book(
             id = 12,
@@ -259,11 +269,12 @@ object SampleBook {
             publicationYear = 1320,
             genres = listOf("Epic", "Poetry"),
             description = "An epic poem that follows the journey of the soul through Hell, Purgatory, and Heaven.",
-            longDescription = "",
+            longDescription = "It is considered to be one of the world's great works of literature. Divided into three major sections—Inferno, Purgatorio, and Paradiso—the poem traces the journey of Dante from darkness and error to the revelation of the divine light, culminating in the Beatific Vision of God.",
             coverImage = "https://i.pinimg.com/564x/6f/11/5a/6f115a218b2a30a66c252414a693529b.jpg",
             localCoverImagePath = R.drawable.the_divine_comedy,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 23,//Random.nextInt(10, 50),
+            rates = 5//Random.nextInt(1, 5)
         ),
         Book(
             id = 13,
@@ -272,29 +283,6 @@ object SampleBook {
             publicationYear = 1880,
             genres = listOf("Classic","Philosophical Fiction"),
             description = "A complex novel exploring themes of spirituality, morality, and human nature.",
-            longDescription = "Blake Ritson, David Warner, Hattie Morahan and John Hurt star in this BBC Radio 4 dramatisation of Dante's epic poem.\n" +
-                    "\n" +
-                    "Inferno: Thirty-five year old Dante finds himself in the middle of a dark wood, in extreme personal and spiritual crisis. " +
-                    "Hope of rescue appears in the form of the venerable poet Virgil, now a shade himself, who offers to lead Dante on an odyssey through the afterlife, beginning in the terrifying depths of Hell.\n" +
-                    "\n" +
-                    "Purgatorio: Dante is led up Mount Purgatory by his guide. " +
-                    "They encounter numerous souls who have embarked on the same difficult journey - one that will eventually lead to their spiritual salvation.\n" +
-                    "\n" +
-                    "Paradiso: Dante's journey comes to a glorious conclusion as he is led by Beatrice, through the spheres of Paradise and into the presence of God himself. " +
-                    "As they ascend, they encounter a number of souls who have also achieved blessedness. " +
-                    "Many years later, the older Dante reflects on the episodes from his life that have inspired his great poem.",
-            coverImage = "https://i.pinimg.com/564x/d5/69/3b/d5693b4b5cdaf0c97e706c098ebe828e.jpg",
-            localCoverImagePath = R.drawable.the_brothers_karamazov,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
-        ),
-        Book(
-            id = 14,
-            title = "Crime and Punishment",
-            author = "Fyodor Dostoevsky",
-            publicationYear = 1866,
-            genres = listOf("Classic", "Psychological Fiction"),
-            description = "A psychological thriller revolving around guilt, conscience, and redemption.",
             longDescription = "Nominated as one of America’s best-loved novels by PBS’s The Great American Read.\n" +
                     "\n" +
                     "With the same suppleness, energy, and range of voices that won their translation of The Brothers Karamazov the PEN/Book-of-the-Month Club Prize, Pevear and Volokhonsky offer a brilliant translation of Dostoevsky's classic novel that presents a clear insight into this astounding psychological thriller.\n" +
@@ -304,10 +292,33 @@ object SampleBook {
                     "This audio edition of Crime and Punishment is expressively brought to life by Peter Batchelor.\n" +
                     "\n" +
                     "©1992 Translation Copyright by Richard Pevear and Larissa Volokhonsky (P)2020 Echo Point Books & Media, LLC",
+            coverImage = "https://i.pinimg.com/564x/d5/69/3b/d5693b4b5cdaf0c97e706c098ebe828e.jpg",
+            localCoverImagePath = R.drawable.the_brothers_karamazov,
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 48,//Random.nextInt(10, 50),
+            rates = 4//Random.nextInt(1, 5)
+        ),
+        Book(
+            id = 14,
+            title = "Crime and Punishment",
+            author = "Fyodor Dostoevsky",
+            publicationYear = 1866,
+            genres = listOf("Classic", "Psychological Fiction"),
+            description = "A psychological thriller revolving around guilt, conscience, and redemption.",
+            longDescription = "Crime and Punishment is a psychological thriller novel by Fyodor Dostoevsky that explores the themes of crime, guilt, and redemption:\n" +
+                    "Plot:\n" +
+                    "The story follows Raskolnikov, a poor former student who murders an elderly pawnbroker and her sister. Raskolnikov is tormented by guilt and terror, and eventually confesses to the crime and goes to prison.\n" +
+                    "Setting:\n" +
+                    "The novel takes place in St. Petersburg, a city that was rebellious but not yet revolutionary.\n" +
+                    "Themes:\n" +
+                    "The novel explores the psychological aspects of crime, such as guilt, paranoia, and mental illness. It also explores how Raskolnikov's actions are influenced by the conditions of his time.\n" +
+                    "Reception:\n" +
+                    "Crime and Punishment was a popular and critical success upon its publication. It was widely translated and influenced fields such as literature, philosophy, and psychoanalysis. Some say that Crime and Punishment is a gut-wrenching look at the best and worst sides of human nature. ",
             coverImage = "https://i.pinimg.com/564x/7b/5f/06/7b5f06ac3e549659269ff9fc478444dc.jpg",
             localCoverImagePath = R.drawable.crime_and_punishment,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 48,//Random.nextInt(10, 50),
+            rates = 3//Random.nextInt(1, 5)
         ),
         Book(
             id = 15,
@@ -342,8 +353,9 @@ object SampleBook {
                     "Having starred in The Old Vic's production of Queers and The National Theatre's Angels in America, Russell is a keen advocate of LGBT rights and, bringing years of stage training experience, the perfect narrator for this epic tale of masculine beauty.",
             coverImage = "https://i.pinimg.com/564x/7a/6e/fe/7a6efe7338bc9f61c790d0a7b673464b.jpg",
             localCoverImagePath = R.drawable.the_picture_of_dorian_gray,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 28,//Random.nextInt(10, 50),
+            rates = 3//Random.nextInt(1, 5)
         ),
         Book(
             id = 16,
@@ -362,8 +374,9 @@ object SampleBook {
                     "If you think that Huxley's vision seems to be the way things are in fact turning out, you're not the only one!",
             coverImage = "https://i.pinimg.com/564x/5f/06/65/5f066515b64613faed22947a8029f139.jpg",
             localCoverImagePath = R.drawable.brave_new_world,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 44,//Random.nextInt(10, 50),
+            rates = 3//Random.nextInt(1, 5)
         ),
         Book(
             id = 17,
@@ -381,8 +394,9 @@ object SampleBook {
                     "Public Domain (P)2010 Naxos Audiobooks",
             coverImage = "https://i.pinimg.com/564x/76/f7/41/76f7410361344a0e15d56d8548530394.jpg",
             localCoverImagePath = R.drawable.the_count_of_monte_cristo,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 48,//Random.nextInt(10, 50),
+            rates = 3//Random.nextInt(1, 5)
         ),
         Book(
             id = 18,
@@ -406,8 +420,9 @@ object SampleBook {
                     "Anna Karenina is a masterpiece not only because of the unforgettable woman at its core and the stark drama of her fate but also because it explores and illuminates the deepest questions about how to live a fulfilled life.",
             coverImage = "https://i.pinimg.com/564x/6e/88/cc/6e88ccf11ae57c70afab36f858745a7f.jpg",
             localCoverImagePath = R.drawable.anna_karenina,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 13,//Random.nextInt(10, 50),
+            rates = 3//Random.nextInt(1, 5)
         ),
         Book(
             id = 19,
@@ -423,8 +438,9 @@ object SampleBook {
                     "Lush, evocative, and deeply humane, the story of Santiago is art eternal testament to the transforming power of our dreams and the importance of listening to our hearts.",
             coverImage = "https://i.pinimg.com/736x/98/bc/0a/98bc0a1a761bc9242f71e2e71f89dd7f.jpg",
             localCoverImagePath = R.drawable.the_alchemist,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 15,//Random.nextInt(10, 50),
+            rates = 2//Random.nextInt(1, 5)
         ),
         Book(
             id = 20,
@@ -443,8 +459,9 @@ object SampleBook {
                     "Public Domain (P)2010 Audible, Inc.",
             coverImage = "https://i.pinimg.com/564x/82/bc/93/82bc931dfe340d06c4b6ca3efdbbe4bd.jpg",
             localCoverImagePath = R.drawable.the_adventures_of_huckleberry_finn,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 33,//Random.nextInt(10, 50),
+            rates = 2//Random.nextInt(1, 5)
         ),
         Book(
             id = 21,
@@ -468,8 +485,9 @@ object SampleBook {
                     "PLEASE NOTE: When you purchase this title, the accompanying PDF will be available in your Audible Library along with the audio.",
             coverImage = "https://i.pinimg.com/564x/ce/6d/7c/ce6d7c97763fd6f07980fdae8485ce89.jpg",
             localCoverImagePath = R.drawable.the_iliad,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 45,//Random.nextInt(10, 50),
+            rates = 5//Random.nextInt(1, 5)
         ),
         Book(
             id = 22,
@@ -493,8 +511,9 @@ object SampleBook {
                     "One that will change both their lives forever.",
             coverImage = "https://i.pinimg.com/564x/8b/c5/d0/8bc5d08aa1ba3d0cf470a322f5d742ad.jpg",
             localCoverImagePath = R.drawable.leviathan,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 39,//Random.nextInt(10, 50),
+            rates = 4//Random.nextInt(1, 5)
         ),
         Book(
             id = 23,
@@ -511,8 +530,9 @@ object SampleBook {
                     "This fresh edition, by award-winning translator Edith Grossman, brings the tale to life as never before.",
             coverImage = "https://i.pinimg.com/564x/d0/d7/8e/d0d78e71834a094a4b6527539c49faa3.jpg",
             localCoverImagePath = R.drawable.don_quixote,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 44,//Random.nextInt(10, 50),
+            rates = 4//Random.nextInt(1, 5)
         ),
         Book(
             id = 24,
@@ -521,11 +541,12 @@ object SampleBook {
             publicationYear = 1818,
             genres = listOf("Gothic", "Science Fiction"),
             description = "A novel about the creation of a monster and the consequences of playing god.",
-            longDescription = "",
+            longDescription = "Frankenstein; or, The Modern Prometheus is a Gothic horror novel by Mary Shelley that explores themes of science, ethics, and responsibility: \nStory\nThe book is about a young scientist named Victor Frankenstein who creates a monster in a secret experiment. The monster initially seeks affection, but it inspires loathing in everyone who meets it. The monster eventually turns on its creator, who loses his life. \nThemes\nThe book explores themes such as the responsibilities of creators to their creations, the nature of humanity, and the idea of what it means to live in a post-lapsis world. \nWriting\nSome say the book has complex and vivid writing that expresses the anguish of both the monster and the creator. \nGenre\nFrankenstein is considered to be one of the first science fiction novels. \nPublication\nThe book was first published anonymously in London in 1818, when Shelley was 20 years old. Her name first appeared in the second edition, published in Paris in 1821. ",
             coverImage = "https://i.pinimg.com/564x/94/37/81/9437811edf3de19193848c78a576a4a9.jpg",
             localCoverImagePath = R.drawable.frankenstein,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 49,//Random.nextInt(10, 50),
+            rates = 5//Random.nextInt(1, 5)
         ),
         Book(
             id = 25,
@@ -543,8 +564,9 @@ object SampleBook {
                     "How he tries to destroy his creation, as it destroys everything Victor loves, is a powerful story of love, friendship, scientific hubris, and hor",
             coverImage = "https://i.pinimg.com/564x/fa/a5/9c/faa59c3617b6f821f48f40b67f653620.jpg",
             localCoverImagePath = R.drawable.alice_s_adventures_in_wonderland,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 49,//Random.nextInt(10, 50),
+            rates = 5//Random.nextInt(1, 5)
         ),
         Book(
             id = 26,
@@ -566,8 +588,9 @@ object SampleBook {
                     "And thus begins this wise and enchanting fable that, in teaching the secret of what is really important in life, has changed forever the world for its readers.",
             coverImage = "https://i.pinimg.com/564x/48/9a/af/489aaf3d176759902217b89899162a2b.jpg",
             localCoverImagePath = R.drawable.the_little_prince,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 22,//Random.nextInt(10, 50),
+            rates = 3//Random.nextInt(1, 5)
         ),
         Book(
             id = 27,
@@ -592,8 +615,9 @@ object SampleBook {
                     "“Deserves a place on the same shelf with The Diary of a Young Girl by Anne Frank.” (USA Today)",
             coverImage = "https://i.pinimg.com/564x/a9/c0/a4/a9c0a4a4c7f78cda7bbdc974149e6155.jpg",
             localCoverImagePath = R.drawable.the_book_thief,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 40,//Random.nextInt(10, 50),
+            rates = 4//Random.nextInt(1, 5)
         ),
         Book(
             id = 28,
@@ -613,8 +637,9 @@ object SampleBook {
                     "Slaughterhouse-Five was hugely successful, brought Vonnegut an enormous audience, was a finalist for the National Book Award and a best seller, and remains four decades later as timeless and shattering a war fiction as Catch-22, with which it stands as the two signal novels of their riotous and furious decade.",
             coverImage = "https://i.pinimg.com/564x/e9/6b/cd/e96bcdaffaa4211329d16a8463286c1e.jpg",
             localCoverImagePath = R.drawable.slaughterhouse_five,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 48,//Random.nextInt(10, 50),
+            rates = 5//Random.nextInt(1, 5)
         ),
         Book(
             id = 29,
@@ -637,8 +662,9 @@ object SampleBook {
                     "If you liked The Grapes of Wrath, you might enjoy East of Eden, also available in Penguin Classics.",
             coverImage = "https://i.pinimg.com/564x/11/7a/5a/117a5a23afa8785306fd1aa67b7d1386.jpg",
             localCoverImagePath = R.drawable.the_grapes_of_wrath,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 15,//Random.nextInt(10, 50),
+            rates = 2//Random.nextInt(1, 5)
         ),
         Book(
             id = 30,
@@ -659,8 +685,9 @@ object SampleBook {
                     "He starts hiding books in his home, and when his pilfering is discovered, the fireman has to run for his life.",
             coverImage = "https://i.pinimg.com/564x/7b/63/3d/7b633dfb1ac4ff8dd2b47db80eeecf58.jpg",
             localCoverImagePath = R.drawable.fahrenheit_451,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 30,//Random.nextInt(10, 50),
+            rates = 3//Random.nextInt(1, 5)
         ),
         Book(
             id = 31,
@@ -674,8 +701,9 @@ object SampleBook {
                     "With this seemingly romantic premise, and through the seemingly innocent acts of children, Golding exposes the duality of human nature itself: the dark, eternal divide between order and chaos, intellect and instinct, structure and savagery.",
             coverImage = "https://i.pinimg.com/564x/b5/78/e0/b578e094fcdee9bc43e9e10bf783e71c.jpg",
             localCoverImagePath = R.drawable.the_lor_of_the_files,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 20,//Random.nextInt(10, 50),
+            rates = 3//Random.nextInt(1, 5)
         ),
         Book(
             id = 32,
@@ -692,8 +720,9 @@ object SampleBook {
                     "For all the answers stick your thumb to the stars. And don't forget to bring a towel!",
             coverImage = "https://i.pinimg.com/564x/af/65/af/af65afc94ecd442c25d93a4dcd86d1f1.jpg",
             localCoverImagePath = R.drawable.the_hitchhiker_s_guide_to_the_galaxy,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 24,//Random.nextInt(10, 50),
+            rates = 3//Random.nextInt(1, 5)
         ),
         Book(
             id = 33,
@@ -738,8 +767,9 @@ object SampleBook {
                     "He has narrated over 20 audiobooks and brings his wealth of experience and characteristic charm to this exciting performance.",
             coverImage = "https://i.pinimg.com/564x/6b/d7/b6/6bd7b60745a1427d989819cf7a1fa52f.jpg",
             localCoverImagePath = R.drawable.a_tale_of_two_cities,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 36,//Random.nextInt(10, 50),
+            rates = 3//Random.nextInt(1, 5)
         ),
         Book(
             id = 34,
@@ -753,8 +783,9 @@ object SampleBook {
                     "This box set includes all seven titles in The Chronicles of Narnia - The Magician's Nephew; The Lion, the Witch, and the Wardrobe; The Horse and His Boy; Prince Caspian; The Voyage of the Dawn Treader; The Silver Chair; and The Last Battle.",
             coverImage = "https://i.pinimg.com/564x/aa/eb/0a/aaeb0ae993357d7ffba9aa5cbcf8a04b.jpg",
             localCoverImagePath = R.drawable.the_chronicles_of_narnia,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 25,//Random.nextInt(10, 50),
+            rates = 3//Random.nextInt(1, 5)
         ),
         Book(
             id = 35,
@@ -774,8 +805,9 @@ object SampleBook {
                     "Cover Art by Fred Marcellino. Used with permission of Pippin Properties, Inc.",
             coverImage = "https://i.pinimg.com/564x/7a/fe/33/7afe33fbafd769cdc7f9d32c329681d3.jpg",
             localCoverImagePath = R.drawable.the_handmaid_s_tale,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 16,//Random.nextInt(10, 50),
+            rates = 2//Random.nextInt(1, 5)
         ),
         Book(
             id = 36,
@@ -797,8 +829,9 @@ object SampleBook {
                     "Virtuoso storyteller Umberto Eco conjures up a gloriously rich portrait of this world with such grace, ease, wit, and love that you will become utterly intoxicated with the place and time.",
             coverImage = "https://i.pinimg.com/564x/46/74/1f/46741fa4d7b21e5157a2444cd7a875d1.jpg",
             localCoverImagePath = R.drawable.the_name_of_the_rose,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 12,//Random.nextInt(10, 50),
+            rates = 1//Random.nextInt(1, 5)
         ),
         Book(
             id = 37,
@@ -814,8 +847,9 @@ object SampleBook {
                     "The renewed energy and power of this classic work are complemented by veteran narrator George Guidall's superb performance.",
             coverImage = "https://i.pinimg.com/564x/19/96/c7/1996c72b66915b98e4585dc32e2a7a79.jpg",
             localCoverImagePath = R.drawable.the_trial,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 10,//Random.nextInt(10, 50),
+            rates = 1//Random.nextInt(1, 5)
         ),
         Book(
             id = 38,
@@ -835,8 +869,9 @@ object SampleBook {
                     "But through the devastation, Khaled Hosseini offers hope for redemption.",
             coverImage = "https://i.pinimg.com/564x/af/4f/8b/af4f8bc196aaff6f0c00b070660d1a19.jpg",
             localCoverImagePath = R.drawable.the_kite_runner,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 38,//Random.nextInt(10, 50),
+            rates = 3//Random.nextInt(1, 5)
         ),
         Book(
             id = 39,
@@ -850,8 +885,9 @@ object SampleBook {
                     "A spellbinding epic tale of ambition, anarchy, and absolute power set against the sprawling medieval canvas of 12th century England, this is Ken Follett's historical masterpiece.",
             coverImage = "https://i.pinimg.com/564x/67/d3/35/67d33537b5e081e3d7fcc82985f2c81f.jpg",
             localCoverImagePath = R.drawable.the_pillars_of_the_earth,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 35,//Random.nextInt(10, 50),
+            rates = 4//Random.nextInt(1, 5)
         ),
         Book(
             id = 40,
@@ -887,8 +923,9 @@ object SampleBook {
                     "Translated by Lucia Graves.",
             coverImage = "https://i.pinimg.com/564x/99/6b/1a/996b1a484ca909f8f92f71451f8913f7.jpg",
             localCoverImagePath = R.drawable.the_shadow_of_the_wind,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 18,//Random.nextInt(10, 50),
+            rates = 2//Random.nextInt(1, 5)
         ),
         Book(
             id = 41,
@@ -924,8 +961,9 @@ object SampleBook {
                     "Cover Credit: Aitch at Central Illustration",
             coverImage = "https://i.pinimg.com/564x/53/f1/20/53f120f54a2ab1598c3f7d4d3782abec.jpg",
             localCoverImagePath = R.drawable.the_secret_garden,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 18,//Random.nextInt(10, 50),
+            rates = 2//Random.nextInt(1, 5)
         ),
         Book(
             id = 42,
@@ -942,8 +980,9 @@ object SampleBook {
                     "©1993 Lois Lowry (P)1993 Random House, Inc., Listening Library, An Imprint Of Random House Audio Publishing Group",
             coverImage = "https://i.pinimg.com/564x/3a/13/0e/3a130ef7ffe5be4eb73a87c1b1b85b92.jpg",
             localCoverImagePath = R.drawable.the_giver,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 12,//Random.nextInt(10, 50),
+            rates = 2//Random.nextInt(1, 5)
         ),
         Book(
             id = 43,
@@ -963,8 +1002,9 @@ object SampleBook {
                     "His unique body of writing, much of which is incomplete and was mainly published posthumously, is considered by some people to be among the most influential in Western literature, inspiring such writers as Albert Camus, Rex Warner, and Samuel Beckett.",
             coverImage = "https://i.pinimg.com/564x/23/e9/93/23e99354e39803b73701b6cfaf8749fb.jpg",
             localCoverImagePath = R.drawable.the_metamorphosis,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 12,//Random.nextInt(10, 50),
+            rates = 1//Random.nextInt(1, 5)
         ),
         Book(
             id = 44,
@@ -973,11 +1013,12 @@ object SampleBook {
             publicationYear = 1936,
             genres = listOf("Historical Fiction","Romance"),
             description = "A historical novel set during the American Civil War, centered around Scarlett O'Hara.",
-            longDescription = "",
+            longDescription = "Characters\nThe story follows Scarlett O'Hara, the daughter of a wealthy planter, as she navigates the romantic trials of the war and Reconstruction. Other characters include Ashley Wilkes, Melanie Hamilton, and Rhett Butler. \nPlot\nScarlett's husband dies in the Confederate Army, leaving her a widow and her baby without a father. She becomes involved in a love triangle with Ashley Wilkes, who is married to his cousin Melanie Hamilton. After a series of failed relationships, Scarlett eventually marries Rhett Butler. \nThemes\nThe novel explores themes such as the Civil War and Reconstruction, classism and racism, and women and power. \nTitle\nThe title of the novel comes from the line \"I have forgot much, Cynara! gone with the wind\" from the poem \"Non Sum Qualis eram Bonae Sub Regno Cynarae\" by Ernest Dowson.Gone with the Wind was adapted into a 1939 film starring Vivien Leigh as Scarlett O'Hara, Leslie Howard as Ashley Wilkes, and Clark Gable as Rhett Butler. ",
             coverImage = "https://i.pinimg.com/564x/1a/87/9a/1a879ac1fefdee0f1f8dd9c0afc9b60a.jpg",
             localCoverImagePath = R.drawable.gone_with_the_wind,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 42,//Random.nextInt(10, 50),
+            rates = 4//Random.nextInt(1, 5)
         ),
         Book(
             id = 45,
@@ -997,8 +1038,9 @@ object SampleBook {
                     "Get ready to hear Gone With the Wind exactly as it was written: every word beautifully captured in a spectacular unabridged audio production.",
             coverImage = "https://i.pinimg.com/564x/81/38/0b/81380b23388651b772ee1a3b85ef896b.jpg",
             localCoverImagePath = R.drawable.the_wind_in_the_willows,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 35,//Random.nextInt(10, 50),
+            rates = 4//Random.nextInt(1, 5)
         ),
         Book(
             id = 46,
@@ -1035,8 +1077,9 @@ object SampleBook {
                     "John Lee as Introductory paragraph, various letters",
             coverImage = "https://i.pinimg.com/564x/55/1f/7e/551f7e09a6793a8bd29df7e4759b508c.jpg",
             localCoverImagePath = R.drawable.dracula,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 37,//Random.nextInt(10, 50),
+            rates = 3//Random.nextInt(1, 5)
         ),
         Book(
             id = 47,
@@ -1057,8 +1100,9 @@ object SampleBook {
                     "Narrator Schreiber, whose previous performance of Brett Easton Ellis’ American Psycho has endeared him to listeners, brings a classic American tale to the ears - and hearts - of a new generation.",
             coverImage = "https://i.pinimg.com/564x/5f/99/6c/5f996cd2f6d632c1039f586f3d8d1d6d.jpg",
             localCoverImagePath = R.drawable.the_call_of_the_wild,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 46,//Random.nextInt(10, 50),
+            rates = 5//Random.nextInt(1, 5)
         ),
         Book(
             id = 48,
@@ -1088,8 +1132,9 @@ object SampleBook {
                     "Cover artwork 2020 CBS Interactive Inc.",
             coverImage = "https://i.pinimg.com/564x/e0/bf/72/e0bf72755d4211338e3b14a5b1791e0b.jpg",
             localCoverImagePath = R.drawable.the_stand,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 37,//Random.nextInt(10, 50),
+            rates = 4//Random.nextInt(1, 5)
         ),
         Book(
             id = 49,
@@ -1114,11 +1159,12 @@ object SampleBook {
                     "Lauded as a literary masterpiece, this is the groundbreaking novel that placed Walker “in the company of Faulkner” (The Nation) and remains a wrenching - yet intensely uplifting - experience for new generations of listeners.",
             coverImage = "https://i.pinimg.com/564x/84/81/62/848162062b67e9cef29b6e8a31870a31.jpg",
             localCoverImagePath = R.drawable.the_color_purple,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 37,//Random.nextInt(10, 50),
+            rates = 4//Random.nextInt(1, 5)
         ),
         Book(
-            id =50,
+            id = 50,
             title = "The Silmarillion",
             author = "J.R.R. Tolkien",
             publicationYear = 1977,
@@ -1135,8 +1181,9 @@ object SampleBook {
                     "'The Akallabeth' recounts the downfall of the great island kingdom of Númenor at the end of the Second Age and 'Of the Rings of Power' tells of the great events at the end of the Third Age, as narrated in The Lord of the Rings.",
             coverImage = "https://i.pinimg.com/736x/30/d7/bf/30d7bf3917404ddc6737de8691ea13e2.jpg",
             localCoverImagePath = R.drawable.the_silmarillion,
-            price = Random.nextInt(10, 50),
-            rates = Random.nextInt(1, 5)
+            stockCoverImagePath = "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/book_store_repository%2Fstock_cover_image_path%2Fbook_image.png?alt=media&token=cc06abec-4490-4118-8a7e-d5ca0c2b753f",
+            price = 17,//Random.nextInt(10, 50),
+            rates = 2//Random.nextInt(1, 5)
         )
     )
 }

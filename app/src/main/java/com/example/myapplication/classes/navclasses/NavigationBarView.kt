@@ -131,7 +131,6 @@ class NavigationBarView {
 
         val seeYourLibraryString = "See Your Library >"
         val viewAllTheBooksString = "View All Books >"
-        val logOut = "Logout"
 
         val userOwnedBooks = UserBooksList.listOfBooksOwnedByUser.toList()
 
@@ -217,7 +216,7 @@ class NavigationBarView {
                     "Notifications" -> notificationsView.InitialNotificationsView(context = cxt, listOfNotifications = listOfNotifications, userProfileImageURL = mapOfUser["userProfileImageURL"].toString())
                     "Favorites" -> favoritesView.InitializeFavoritesView(context = cxt, listOfMapsOfLikes = listOfMapsOfLikes)
                     "SCart" -> shoppingCartView.InitializeShoppingView(context = cxt)
-                    else -> mainView.InitMainView(context = cxt, user = mapOfUser, uid = userId, userOwnedBooks = userOwnedBooks)
+                    else -> mainView.InitMainView(context = cxt, user = mapOfUser, uid = userId, userOwnedBooks = emptyList(), mapOfUser = mapOfUser)//userOwnedBooks
                 }
             }
         }
@@ -226,11 +225,11 @@ class NavigationBarView {
 
 @Composable
     private fun MyDropDownMenu(
-        cxt: Context,
-        seeYourLibraryString: String,
-        viewAllTheBooksString: String,
-        userOwnedBooks: List<Book>,
-        mapOfUser: MutableMap<String, String>
+    cxt: Context,
+    seeYourLibraryString: String,
+    viewAllTheBooksString: String,
+    userOwnedBooks: List<Book>,
+    mapOfUser: MutableMap<String, String>
     ) {
 
         var expanded by remember {
@@ -268,6 +267,7 @@ class NavigationBarView {
                     }
                 )
                 HorizontalDivider()
+
                 // Best seller button.
                 DropdownMenuItem(
                     text = { Text(viewAllTheBooksString) },
@@ -298,7 +298,9 @@ class NavigationBarView {
                         launcher.launch(intent)
                     },
                 )
+
                 HorizontalDivider()
+
                 // Log out button.
                 DropdownMenuItem(
                     text = { Text("Log out") },
@@ -308,6 +310,7 @@ class NavigationBarView {
                         showMessage(cxt, "Logged out")
                     },
                 )
+
             }
         }
     }
