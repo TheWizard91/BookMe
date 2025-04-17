@@ -6,13 +6,13 @@ plugins {
 
 android {
     namespace = "com.example.myapplication"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.myapplication"
         minSdk = 24
         //noinspection EditedTargetSdkVersion
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -70,6 +70,8 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2024.06.00"))
     implementation(platform("androidx.compose:compose-bom:2024.06.00"))
     implementation("androidx.activity:activity:1.9.0")
+    implementation("com.android.volley:volley:1.2.1")
+    implementation("androidx.media3:media3-common-ktx:1.5.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

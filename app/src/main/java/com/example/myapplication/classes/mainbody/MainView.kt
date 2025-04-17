@@ -10,7 +10,7 @@ import com.example.myapplication.classes.mainbody.lowerbody.BestSellersView
 import com.example.myapplication.classes.mainbody.upperbody.MyLibraryView
 import com.example.myapplication.data_classes.MyStateAndViewData
 
-class MainView() {
+class MainView {
 
     /**pre:---.
      * post:displays the view of main body/home.*/

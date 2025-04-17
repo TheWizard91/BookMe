@@ -12,4 +12,6 @@
     <string name="title_activity_view_all">ViewAllActivity</string>
     <string name="title_activity_clicked_book">ClickedBookActivity</string>
     <string name="title_activity_best_sellers">BestSellersActivity</string>
+    <string name="buy_it_now_activity">BuyItNowActivity</string>
+
 </resources>

@@ -593,7 +593,7 @@ private fun setUpdatesToDatabases(user: NewUserCredentials, oldUserProfileImageS
 //    Log.d("oldN2", oldUserProfileImageSerialNumber)
 
     // Realtime database for notifications.
-    val notifications = NotificationsDatabase()
+    val notifications = NotificationsDatabase(user)
     notifications.setNotifications("Updated ", user)
 
     val firestore = FireStoreDatabase(user)

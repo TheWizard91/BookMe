@@ -91,8 +91,7 @@ fun LoginField (
     placeholder: String = "Enter your email to login"
 ) {
     val focusManager = LocalFocusManager.current
-    var text by remember {
-        mutableStateOf("") }
+    var text by remember { mutableStateOf("") }
     val myBrush = remember {
         Brush.linearGradient(
             colors = listOf(Color.Red, Color.Green, Color.Blue, Color.Yellow),//rainbowColors

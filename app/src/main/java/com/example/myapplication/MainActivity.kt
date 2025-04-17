@@ -62,8 +62,8 @@ class MainActivity : ComponentActivity() {
     private lateinit var storageDB: StorageDatabase
     //TODO: userId is not needed as uid C mapOfUser.
     private lateinit var userId: String
-
     @RequiresApi(Build.VERSION_CODES.Q)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -78,7 +78,8 @@ class MainActivity : ComponentActivity() {
         var listOfMaps: List<Map<String, String>> = emptyList<Map<String, String>>().toMutableStateList()
         var listOfMapsOfLikes: List<Map<String, String>> = emptyList<Map<String, String>>().toMutableStateList()
         var listOfBooksOwnedByTheUser: List<Map<String, String>> = emptyList<Map<String, String>>().toMutableStateList()
-        var listOfAllBooks: List<BookData> = emptyList<BookData>().toMutableStateList()
+        // var listOfAllBooks: List<BookData> = emptyList<BookData>().toMutableStateList()
+        var listMapOfBooksInShoppingCart: List<Map<String, String>> = emptyList<Map<String, String>>().toMutableStateList()
 
         setContent {
 
@@ -104,29 +105,74 @@ class MainActivity : ComponentActivity() {
                     listOfMaps = listOfNotificationMaps
                 }
 
+                // Books Owned View Info
                 getListOfBooksOwnedByTheUser { books ->
                     listOfBooksOwnedByTheUser = books
                 }
 
                 // Likes info
-                getLikesDataFromFirebaseDatabase { likes ->
+                getLikesDataFromFirebaseDatabase (mapOfUser) { likes ->
                     listOfMapsOfLikes = likes
                 }
 
-                var isDataLoaded by remember { mutableStateOf(false) }
+                // Shopping Cart Info
+                getBooksInShoppingCart { booksInShoppingCartDB ->
+                    listMapOfBooksInShoppingCart = booksInShoppingCartDB
+                }
 
+                var isDataLoaded by remember { mutableStateOf(false) }
                 LaunchedEffect(Unit) {
                     delay(1000L)
                     isDataLoaded = true
                 }
 
                 if (isDataLoaded)
-                    MainBody(mapOfUser, listOfMaps, userId, listOfMapsOfLikes)
+                    MainBody(mapOfUser, listOfMaps, userId, listOfMapsOfLikes, listMapOfBooksInShoppingCart)
                 else
                     Loading()
 
             }
         }
+    }
+
+    private fun getBooksInShoppingCart(onBooksInShoppingCartDBCallback: (List<Map<String, String>>) -> Unit) {
+        database
+            .collection("ShoppingCart/${userId}/Books/")
+            .get()
+            .addOnSuccessListener { task ->
+                if (task.isEmpty) {
+                    val myEmptyList: List<Map<String, String>> = listOf()
+                    onBooksInShoppingCartDBCallback(myEmptyList)
+                } else {
+                    val mapsOfBooksInShoppingCartDB: MutableList<MutableMap<String, String>> = emptyList<MutableMap<String, String>>().toMutableList()
+                    val listOfKeys: MutableList<List<String>> = emptyList<List<String>>().toMutableList()
+                    val listOfValues: MutableList<List<String>> = emptyList<List<String>>().toMutableList()
+
+                    // Get all the keys.
+                    task.forEach {  query ->
+                        listOfKeys.add(query.data.keys.toList())
+                    }
+
+                    // Get all the values.
+                    task.forEach {  query ->
+                        listOfValues.add(query.data.values.toList() as List<String>)
+                    }
+
+                    // Make the map.
+                    for (i in 0 until listOfKeys.size) {
+                        val map: MutableMap<String, String> = emptyMap<String, String>().toMutableMap()
+                        for (j in 0 until listOfValues[i].size) {
+                            map[listOfKeys[i][j]] = listOfValues[i][j]
+                        }
+                        mapsOfBooksInShoppingCartDB.add(map)
+                    }
+
+                    onBooksInShoppingCartDBCallback(mapsOfBooksInShoppingCartDB)
+                }
+            }
+            .addOnFailureListener { exception ->
+                logMessage("error", exception.toString())
+            }
     }
 
     private fun getBooksInRepository (onBooksInStoreRepositoryCallback: (List<Book>) -> Unit) {
@@ -153,9 +199,14 @@ class MainActivity : ComponentActivity() {
             }
     }
 
-    private fun getLikesDataFromFirebaseDatabase (onLikesInDatabaseCallback: (List<Map<String, String>>) -> Unit) {
+    private fun getLikesDataFromFirebaseDatabase (
+        mapOfUser: MutableMap<String, String>,
+        onLikesInDatabaseCallback: (List<Map<String, String>>) -> Unit
+    ) {
         database
             .collection("Likes")
+            .document(mapOfUser["uid"].toString())
+            .collection("Books")
             .get()
             .addOnSuccessListener { task ->
                 // Is the db empty
@@ -163,6 +214,7 @@ class MainActivity : ComponentActivity() {
                     val myEmptyList: List<Map<String, String>> = listOf()//emptyMap<String, String>().toMutableMap()
                     onLikesInDatabaseCallback(myEmptyList)
                 } else { // The db is not empty.
+
                     val listOfMapsOfLikes: MutableList<MutableMap<String, String>> = emptyList<MutableMap<String, String>>().toMutableList()
                     val listOfKeys: MutableList<List<String>> = emptyList<List<String>>().toMutableList()
                     val listOfValues: MutableList<List<String>> = emptyList<List<String>>().toMutableList()
@@ -171,10 +223,12 @@ class MainActivity : ComponentActivity() {
                     task.forEach {  query ->
                         listOfKeys.add(query.data.keys.toList())
                     }
+
                     // Get all the values.
                     task.forEach {  query ->
                         listOfValues.add(query.data.values.toList() as List<String>)
                     }
+
                     // Make the map.
                     for (i in 0 until listOfKeys.size) {
                         val map: MutableMap<String, String> = emptyMap<String, String>().toMutableMap()
@@ -183,6 +237,7 @@ class MainActivity : ComponentActivity() {
                         }
                         listOfMapsOfLikes.add(map)
                     }
+
                     onLikesInDatabaseCallback(listOfMapsOfLikes)
                 }
             }
@@ -283,9 +338,10 @@ fun MainBody(
     userInfo: MutableMap<String, String>,
     mapOfNotifications: List<Map<String, String>>,
     userId: String,
-    listOfMapsOfLikes: List<Map<String, String>>
+    listOfMapsOfLikes: List<Map<String, String>>,
+    listMapOfBooksInShoppingCart: List<Map<String, String>>
 ) {
-    MainContent(userInfo, mapOfNotifications, userId, listOfMapsOfLikes)
+    MainContent(userInfo, mapOfNotifications, userId, listOfMapsOfLikes, listMapOfBooksInShoppingCart)
 }
 
 @SuppressLint("RestrictedApi", "UnrememberedMutableState")
@@ -294,7 +350,8 @@ fun MainContent(
     mapOfUser: MutableMap<String, String>,
     listOfNotifications: List<Map<String, String>>,
     userId: String,
-    listOfMapsOfLikes: List<Map<String, String>>
+    listOfMapsOfLikes: List<Map<String, String>>,
+    listMapOfBooksInShoppingCart: List<Map<String, String>>
 ) {
     /*pre:---.
     * post: this is the main view of the app.*/
@@ -314,9 +371,10 @@ fun MainContent(
     navigationBarView.InitialViewOfNavigationBarView(
         cxt = cxt,
         mapOfUser = user,
+        userId = userId,
         listOfNotifications = listOfNotifications,
         listOfMapsOfLikes = listOfMapsOfLikes,
-        userId = userId,
+        listMapOfBooksInShoppingCart = listMapOfBooksInShoppingCart,
     )
 }
 
@@ -528,7 +586,46 @@ fun PreviewMainBody () {
                     "userProfileImageURL" to "https://firebasestorage.googleapis.com/v0/b/bookme-dc582.appspot.com/o/ayAebp8hE8NACQvgrJ4jj5FC0422%2Fcurrent_profile_image%2Fcontent%3A%2Fmedia%2Fpicker%2F0%2Fcom.android.providers.media.photopicker%2Fmedia%2F1000002089.jpg?alt=media&token=db96e15e-3dd9-4d07-a5a1-a0b29062e8ef"
                 )
             )
-            MainBody(map, listOfNotifications, "YXUBtBZd8vPgBJ9viOU4Z7OL1PR2", listOfNotifications)
+            val listMapOfBooksInShoppingCart: MutableList<Map<String, String>> = emptyList<Map<String, String>>().toMutableList()
+            listMapOfBooksInShoppingCart.add(
+                mapOf(
+                    "longDescription" to "Austen's most popular novel, the unforgettable story of Elizabeth Bennet and Mr. Darcy Few have failed to be charmed by the witty and independent spirit of Elizabeth Bennet in Austen’s beloved classic Pride and Prejudice. " +
+                            "When Elizabeth Bennet first meets eligible bachelor Fitzwilliam Darcy, she thinks him arrogant and conceited; he is indifferent to her good looks and lively mind. " +
+                            "When she later discovers that Darcy has involved himself in the troubled relationship between his friend Bingley and her beloved sister Jane, she is determined to dislike him more than ever. " +
+                            "In the sparkling comedy of manners that follows, Jane Austen shows us the folly of judging by first impressions and superbly evokes the friendships, gossip and snobberies of provincial middle-class life. " +
+                            "This Penguin Classics edition, based on Austen's first edition, contains the original Penguin Classics introduction by Tony Tanner and an updated introduction and notes by Viven Jones. " +
+                            "For more than seventy years, Penguin has been the leading publisher of classic literature in the English-speaking world. " +
+                            "With more than 1,700 titles, Penguin Classics represents a global bookshelf of the best works throughout history and across.",
+                    "author" to "Jane Austen",
+                    "genres" to "[Classic, Romance]",
+                    "price" to "36",
+                    "coverImage" to "https://i.pinimg.com/564x/5c/12/6e/5c126ebc616400330587845a172c110d.jpg",
+                    "rates" to "4",
+                    "publicationYear" to "1813",
+                    "description" to "A classic novel exploring themes of love, marriage, and social norms.",
+                    "id" to "3",
+                    "title" to "Pride and Prejudice"
+                ),
+//                mapOf(
+//                    "longDescription" to "Anyone who has read J.D. Salinger's New Yorker stories--particularly A Perfect Day for Bananafish, Uncle Wiggily in Connecticut, The Laughing Man, and For Esme With Love and Squalor--will not be surprised by the fact that his first novel is full of children. The hero-narrator of The Catcher in the Rye is an ancient child of sixteen, a native New Yorker named Holden Caulfield. Through circumstances that tend to preclude adult, secondhand description, he leaves his prep school in Pennsylvania and goes underground in New York City for three days. The boy himself is at once too simple and too complex for us to make any final comment about him or his story. Perhaps the safest thing we can say about Holden is that he was born in the world not just strongly attracted to beauty but, almost, hopelessly impaled on it. There are many voices in this novel: children's voices, adult voices, underground voices-but Holden's voice is the most eloquent of all. Transcending his own vernacular, yet remaining marvelously faithful to it, he issues a perfectly articulated cry of mixed pain and pleasure. However, like most lovers and clowns and poets of the higher orders, he keeps most of the pain to, and for, himself. The pleasure he gives away, or sets aside, with all his heart. It is there for the reader who can handle it to keep.",
+//                    "price" to "13",
+//                    "author" to "J.D. Salinger",
+//                    "genres" to "[Fiction, Coming-of-age]",
+//                    "rates" to "2",
+//                    "coverImage" to "https://i.pinimg.com/564x/4b/be/9c/4bbe9c695bd2c2005847108120df0612.jpg",
+//                    "publicationYear" to "1951",
+//                    "description" to "A classic coming-of-age novel following Holden Caulfield's journey.",
+//                    "id" to "7",
+//                    "title" to "The Catcher in the Rye",
+//                )
+            )
+            MainBody(
+                map,
+                listOfNotifications,
+                "YXUBtBZd8vPgBJ9viOU4Z7OL1PR2",
+                listOfNotifications,
+                listMapOfBooksInShoppingCart
+            )
         }
     }
 }

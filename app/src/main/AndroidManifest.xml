@@ -15,6 +15,11 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
+            android:name=".BuyItNowActivity"
+            android:exported="false"
+            android:label="@string/buy_it_now_activity"
+            android:theme="@style/Theme.MyApplication"/>
+        <activity
             android:name=".mainactivityscomponents.BestSellersActivity"
             android:exported="false"
             android:label="@string/title_activity_best_sellers"
@@ -28,11 +33,11 @@
         <!-- android:exported="false" -->
         <!-- android:label="@string/title_activity_clicked_book" -->
         <!-- android:theme="@style/Theme.MyApplication" /> -->
-        <activity
-            android:name=".test.ui.ViewAllActivity"
-            android:exported="false"
-            android:label="@string/title_activity_view_all"
-            android:theme="@style/Theme.MyApplication" />
+<!--        <activity-->
+<!--            android:name=".test.ui.ViewAllActivity"-->
+<!--            android:exported="false"-->
+<!--            android:label="@string/title_activity_view_all"-->
+<!--            android:theme="@style/Theme.MyApplication" />-->
         <activity
             android:name=".UpdateUserAccountActivity"
             android:exported="false"
@@ -68,7 +73,8 @@
             android:name=".MainActivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/Theme.MyApplication">
+            android:theme="@style/Theme.MyApplication"
+            tools:ignore="RedundantLabel">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->

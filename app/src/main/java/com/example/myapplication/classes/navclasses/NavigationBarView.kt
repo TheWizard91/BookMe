@@ -96,9 +96,10 @@ class NavigationBarView {
     internal fun InitialViewOfNavigationBarView(
         cxt: Context,
         mapOfUser: MutableMap<String, String>,
-        listOfNotifications: List<Map<String, String>>,
         userId: String,
+        listOfNotifications: List<Map<String, String>>,
         listOfMapsOfLikes: List<Map<String, String>>,
+        listMapOfBooksInShoppingCart: List<Map<String, String>>
     ) {
 
         // App-related variables
@@ -108,7 +109,7 @@ class NavigationBarView {
         val homeTab = TabBarItem(title = "Home", selectedIcon = Icons.Filled.Home, unselectedIcon =  Icons.Outlined.Home)
         val notificationsTab = TabBarItem(title = "Notifications", selectedIcon = Icons.Filled.Notifications, unselectedIcon = Icons.Outlined.Notifications, badgeAmount = "${listOfNotifications.size}")
         val favoriteTab = TabBarItem(title = "Favorite", selectedIcon = Icons.Filled.Favorite, unselectedIcon = Icons.Outlined.Favorite, badgeAmount = "${listOfMapsOfLikes.size}")
-        val shoppingCartTab = TabBarItem(title = "SCart", selectedIcon = Icons.Filled.ShoppingCart, unselectedIcon = Icons.Outlined.ShoppingCart, badgeAmount = "0")
+        val shoppingCartTab = TabBarItem(title = "SCart", selectedIcon = Icons.Filled.ShoppingCart, unselectedIcon = Icons.Outlined.ShoppingCart, badgeAmount = "${listMapOfBooksInShoppingCart.size}")
 
         // creating a list of all the tabs
         val tabBarItems: List<TabBarItem> = listOf(homeTab, notificationsTab, favoriteTab, shoppingCartTab)
@@ -214,9 +215,9 @@ class NavigationBarView {
                     statesManager.currentBottomNavView
                 ) {
                     "Notifications" -> notificationsView.InitialNotificationsView(context = cxt, listOfNotifications = listOfNotifications, userProfileImageURL = mapOfUser["userProfileImageURL"].toString())
-                    "Favorites" -> favoritesView.InitializeFavoritesView(context = cxt, listOfMapsOfLikes = listOfMapsOfLikes)
-                    "SCart" -> shoppingCartView.InitializeShoppingView(context = cxt)
-                    else -> mainView.InitMainView(context = cxt, user = mapOfUser, uid = userId, userOwnedBooks = emptyList(), mapOfUser = mapOfUser)//userOwnedBooks
+                    "Favorites" -> favoritesView.InitializeFavoritesView(context = cxt, listOfMapsOfLikes = listOfMapsOfLikes, mapOfUser = mapOfUser)
+                    "SCart" -> shoppingCartView.InitializeShoppingView(context = cxt, listMapOfBooksInShoppingCart = listMapOfBooksInShoppingCart, mapOfUser = mapOfUser)
+                    else -> mainView.InitMainView(context = cxt, user = mapOfUser, uid = userId, userOwnedBooks = emptyList(), mapOfUser = mapOfUser)
                 }
             }
         }

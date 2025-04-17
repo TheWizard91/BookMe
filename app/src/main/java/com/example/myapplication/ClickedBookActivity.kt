@@ -282,7 +282,7 @@ private fun BookView(
     val myText: String = book.getLongDescription()
     val firestoreDB = FireStoreDatabase(firstname, lastname, email, gender, phone, moreInfo, profileImageSerialNumber, profileImage, userProfileImageURL, uid)
     val currentUser = FirebaseAuth.getInstance().currentUser
-    val notifications = NotificationsDatabase()
+    val notifications = NotificationsDatabase(firstname, lastname, email, gender, phone, moreInfo, profileImageSerialNumber, profileImage, userProfileImageURL, uid)
     var pressed: Boolean by remember { mutableStateOf(false) }
     var likesButtonState: Boolean by remember { mutableStateOf(false) }
     var menuButtonState: Boolean by remember { mutableStateOf(false) }
@@ -316,10 +316,17 @@ private fun BookView(
                 }
 
                 Spacer(modifier = Modifier.weight(3f))
+
+                // Check if book was previously liked. The like button is red if it is, blank otherwise.
                 firestoreDB.likesCheck(book) { isBookLikedAlready ->
                     likesButtonState = isBookLikedAlready
                 }
-                notifications.isTheBookInNotificationsDB(book, firstname, lastname, uid, userProfileImageURL)
+
+                //
+                var message: String = firstname + " " + lastname + " just liked " + book.getTitle()
+                notifications.isTheBookInNotificationsDB(book, firstname, lastname, uid, userProfileImageURL) { appropriateMessage ->
+                    message = appropriateMessage
+                }
 
                 IconButton(
                     modifier = Modifier.weight(1f),
@@ -329,9 +336,11 @@ private fun BookView(
                             firestoreDB.likesHandler(book, likesButtonState) { isLiked ->
                                 likesButtonState = isLiked
                             }
-                            /** TODO: Check if the book was already liked (already in real time bd) so that
-                             *   wed can add/delete it from the real time db (things to do in the following method).*/
-                            notifications.setNotificationsDBForLikedBooks(book, firstname, lastname, uid, userProfileImageURL)
+                            /* TODO: It crashes the app aright after the second click.
+                                    So for instance, I liked a book and the I removed the like right after
+                                    w/t refreshing or exiting the activity, it crushes.
+                             */
+                            notifications.setNotificationsDBForLikedBooks(book, message)
                         }
                     }
                 ) {
@@ -454,6 +463,8 @@ private fun BookView(
                             .fillMaxWidth()
                             .wrapContentHeight()
                     ) {
+
+                        // Description Title
                         Text(
                             modifier = Modifier
                                 .weight(2f)
@@ -461,6 +472,8 @@ private fun BookView(
                             text = "Description",
                             fontSize = 24.sp,
                         )
+
+                        // Price
                         Text(
                             modifier = Modifier
                                 .weight(1f)
@@ -471,9 +484,12 @@ private fun BookView(
                         )
                     }
                 }
+
+                // Long Description Details
                 MyScrollingFunction(myText)
             }
         }
+
         Column {
             LazyRow (
                 modifier = Modifier.fillMaxWidth(),

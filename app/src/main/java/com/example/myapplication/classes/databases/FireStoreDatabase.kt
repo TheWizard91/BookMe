@@ -97,8 +97,14 @@ class FireStoreDatabase(var user: NewUserCredentials) {
         )
 
         cloudDB
-            .document("Likes/${ user.userId }/${ user.firstname }' s/${ book.getId() }/")
+            .document("Likes/${user.userId}/Books/${book.getId()}/")
             .set(mapOfBook)
+    }
+
+    internal fun setShoppingCartDB (book: Map<String, String>) { // , onListOfBooksInShoppingCartCallback: (List<Map<String,String>>) -> Unit
+        cloudDB
+            .document("ShoppingCart/${user.userId}/Books/${book["id"]}")
+            .set(book)
     }
     
     internal fun likesCheck(book: Book, onLikeUpdateCallback: (Boolean) -> Unit) {
@@ -108,7 +114,7 @@ class FireStoreDatabase(var user: NewUserCredentials) {
          * post: Like button will be red or black according to the lies table on db.*/
         
         cloudDB
-            .document("Likes/${ user.userId }/${ user.firstname }' s/${ book.getId() }/")
+            .document("Likes/${user.userId}/Books/${book.getId()}/")
             .get()
             .addOnSuccessListener {  documentSnapshot ->
                 if (documentSnapshot.exists())
@@ -155,7 +161,7 @@ class FireStoreDatabase(var user: NewUserCredentials) {
         cloudDB
             .collection("Likes")
             .document(user.userId)
-            .collection("${ user.firstname }' s")
+            .collection("Books")
             .document(book.getId().toString())
             .delete()
             .addOnSuccessListener { }

@@ -93,8 +93,6 @@ class BestSellersActivity : ComponentActivity() {
                     "userProfileImageURL" to intent.getStringExtra("USER_PROFILE_IMAGE_URL").toString()
                 )
 
-                logMessage("noci",mapOfUser.toString())
-
                 var clickedBook = Book()
                 allBooks.forEach { book ->
                     if (book.getTitle() == bookName)
@@ -289,7 +287,6 @@ private fun BookCard(
                                 }
                             // Start the activity using the launcher.
                             launcher.launch(intent)
-                            logMessage("whatBook", book.getTitle())
                         }
                     )
                     .border(border = BorderStroke(2.dp, Color.White), shape = RectangleShape),

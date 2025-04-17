@@ -534,7 +534,7 @@ private fun setDatabases(user: NewUserCredentials) {
 
 
     // Realtime database for notifications.
-    val notifications = NotificationsDatabase()
+    val notifications = NotificationsDatabase(user)
     notifications.setNotifications("Welcome ", user)
 
     val firestore = FireStoreDatabase(user)
