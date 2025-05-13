@@ -1,5 +1,6 @@
 package com.example.myapplication.classes.navclasses
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -7,8 +8,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,10 +25,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PublishedWithChanges
 import androidx.compose.material.icons.rounded.StarRate
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,20 +41,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorMatrix
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.myapplication.BuyItNowActivity
+import com.example.myapplication.MainActivity
 import com.example.myapplication.R
 import com.example.myapplication.classes.databases.FireStoreDatabase
 
@@ -65,10 +75,25 @@ class FavoritesView {
             Column(
                 modifier = Modifier.padding(all = 8.dp)
             ) {
-                LazyColumn {
-                    items (listOfMapsOfLikes.size) { idx ->
-                        FavoritesCard(context, listOfMapsOfLikes[idx], mapOfUser)
+                Box (contentAlignment = Alignment.TopCenter)
+                {
+                    LazyColumn {
+                        items(listOfMapsOfLikes.size) { idx ->
+                            FavoritesCard(context, listOfMapsOfLikes[idx], mapOfUser)
+                        }
                     }
+                    var isClicked: Boolean by remember { mutableStateOf(true) }
+                    var pressed: Boolean by remember { mutableStateOf(false) }
+                    RefreshFloatingButton(
+                        LocalConfiguration.current.screenHeightDp.dp,
+                        LocalConfiguration.current.screenWidthDp.dp,
+                        pressed,
+                        onRefreshListener = { newState ->
+                            pressed = newState
+                            context.startActivity(Intent(context, MainActivity()::class.java))
+                            (context as Activity).finish()
+                        }
+                    )
                 }
             }
         }
@@ -218,7 +243,7 @@ class FavoritesView {
 
         /**Showing options to either buy the book right now or add it to the shopping cart.*/
 
-        val options: List<String> = listOf("Buy it now", "Add it to chart", "View item", "See similar")
+        val options: List<String> = listOf("Buy it now", "Add it to cart", "View item", "See similar")
         val firestoreDB = FireStoreDatabase(
             mapOfUser["firstname"].toString(),
             mapOfUser["lastname"].toString(),
@@ -234,72 +259,101 @@ class FavoritesView {
         val launcher = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.StartActivityForResult()
         ) { }
-
-        //
-        Row (
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-        ) {
-            LazyRow {
-                items(options.size) { optionIdx ->
-                    Card(
-                        modifier = Modifier.padding(all = 8.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.White),
-                        shape = RoundedCornerShape(8.dp),
-                    ) {
-                        ClickableText(
-                            text = AnnotatedString(options[optionIdx]),
+            //
+            Row (
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                LazyRow {
+                    items(options.size) { optionIdx ->
+                        Card(
                             modifier = Modifier.padding(all = 8.dp),
-                            style = TextStyle(fontWeight = FontWeight.Bold),
-                            onClick = {
-                                // Clicked Buy it now
-                                if (options[optionIdx] == "Buy it now") {
-                                    // Buy it now activity.
-                                    val intent: Intent = Intent(context, BuyItNowActivity::class.java).apply {
-//
-//                                        // User information
-//                                        putExtra("UID", mapOfUser["uid"])
-//                                        putExtra("FIRSTNAME", mapOfUser["firstname"])
-//                                        putExtra("Gender", mapOfUser["gender"])
-//                                        putExtra("PHONE", mapOfUser["phone"])
-//                                        putExtra(
-//                                            "PROFILE_IMAGE_SERIAL_NUMBER",
-//                                            mapOfUser["profileImageSerialNumber"]
-//                                        )
-//                                        putExtra("PROFILE_IMAGE", mapOfUser["profileImage"])
-//                                        putExtra("MORE_INFO", mapOfUser["moreInfo"])
-//                                        putExtra("EMAIL", mapOfUser["email"])
-//                                        putExtra("LASTNAME", mapOfUser["lastname"])
-//                                        putExtra(
-//                                            "USER_PROFILE_IMAGE_URL",
-//                                            mapOfUser["userProfileImageURL"]
-//                                        )
-//
-//                                        // Book infos
-//                                        putExtra("ID", book["id"])
-//                                        putExtra("TITLE", book["title"])
-//                                        putExtra("AUTHOR", book["author"])
-//                                        putExtra("PUBLICATION_YEAR", book["publicationYear"])
-//                                        putExtra("GENRES", book["genres"])
-//                                        putExtra("DESCRIPTION", book["description"])
-//                                        putExtra("LONG_DESCRIPTION", book["longDescription"])
-//                                        putExtra("COVER_IMAGE", book["coverImage"])
-//                                        putExtra("LOCAL_COVER_IMAGE_PATH", book["localCoverImagePath"])
-//                                        putExtra("STOCK_COVER_IMAGE_PATH", book["stockCoverImagePath"])
-//                                        putExtra("PRICE", book["price"])
-//                                        putExtra("RATES", book["rates"])
+                            colors = CardDefaults.cardColors(containerColor = Color.White),
+                            shape = RoundedCornerShape(8.dp),
+                        ) {
+                            ClickableText(
+                                text = AnnotatedString(options[optionIdx]),
+                                modifier = Modifier.padding(all = 8.dp),
+                                style = TextStyle(fontWeight = FontWeight.Bold),
+                                onClick = {
+                                    // Clicked Buy it now
+                                    if (options[optionIdx] == "Buy it now") {
+                                        // Buy it now activity.
+                                        val intent: Intent = Intent(context, BuyItNowActivity::class.java).apply {
+    //
+    //                                        // User information
+    //                                        putExtra("UID", mapOfUser["uid"])
+    //                                        putExtra("FIRSTNAME", mapOfUser["firstname"])
+    //                                        putExtra("Gender", mapOfUser["gender"])
+    //                                        putExtra("PHONE", mapOfUser["phone"])
+    //                                        putExtra(
+    //                                            "PROFILE_IMAGE_SERIAL_NUMBER",
+    //                                            mapOfUser["profileImageSerialNumber"]
+    //                                        )
+    //                                        putExtra("PROFILE_IMAGE", mapOfUser["profileImage"])
+    //                                        putExtra("MORE_INFO", mapOfUser["moreInfo"])
+    //                                        putExtra("EMAIL", mapOfUser["email"])
+    //                                        putExtra("LASTNAME", mapOfUser["lastname"])
+    //                                        putExtra(
+    //                                            "USER_PROFILE_IMAGE_URL",
+    //                                            mapOfUser["userProfileImageURL"]
+    //                                        )
+    //
+    //                                        // Book infos
+    //                                        putExtra("ID", book["id"])
+    //                                        putExtra("TITLE", book["title"])
+    //                                        putExtra("AUTHOR", book["author"])
+    //                                        putExtra("PUBLICATION_YEAR", book["publicationYear"])
+    //                                        putExtra("GENRES", book["genres"])
+    //                                        putExtra("DESCRIPTION", book["description"])
+    //                                        putExtra("LONG_DESCRIPTION", book["longDescription"])
+    //                                        putExtra("COVER_IMAGE", book["coverImage"])
+    //                                        putExtra("LOCAL_COVER_IMAGE_PATH", book["localCoverImagePath"])
+    //                                        putExtra("STOCK_COVER_IMAGE_PATH", book["stockCoverImagePath"])
+    //                                        putExtra("PRICE", book["price"])
+    //                                        putExtra("RATES", book["rates"])
+                                        }
+                                        launcher.launch(intent)
+                                    } else {
+                                        //TODO: the following code will update the database
+                                        // of the table ShoppingCart where the chosen books
+                                        // from the user are store and can be processed for payment
+                                        // (books in shopping cart).
+                                        // The problems is that I can't dynamically update the the
+                                        // view on the app, hence, it does not show the updated list
+                                        // of books. So, what i've done is to have the button to refresh the
+                                        // entire app by sending the user back to main activity.
+
+                                        // Update Shopping cart view.
+                                        firestoreDB.setShoppingCartDB(book = book)
                                     }
-                                    launcher.launch(intent)
-                                } else {
-                                    // Update Shopping cart view.
-                                    firestoreDB.setShoppingCartDB(book = book)
-                                }
-                            },
-                        )
+                                },
+                            )
+                        }
                     }
                 }
-            }
         }
     }
+
+    @Composable
+    private fun RefreshFloatingButton(
+        screenWidth: Dp = 0.dp,
+        screenHeight: Dp = 0.dp,
+        isPressed: Boolean = false,
+        onRefreshListener: (bool: Boolean) -> Unit
+    ) {
+        val matrix = ColorMatrix()
+        matrix.setToSaturation(0F)
+        LargeFloatingActionButton(
+            modifier = Modifier
+                .absoluteOffset(x = (-100).dp, y = 450.dp)
+                .shadow(2.dp, RoundedCornerShape(50),),
+            onClick = { onRefreshListener(!isPressed) },
+            shape = CircleShape,
+        ) {
+            Icon(Icons.Filled.PublishedWithChanges, "Large floating action button")
+        }
+    }
+
 }

@@ -4,13 +4,17 @@ import android.content.Context
 import androidx.annotation.OptIn
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -19,6 +23,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -67,25 +72,68 @@ class ShoppingCartView {
             Column (
                 modifier = Modifier.padding(all = 8.dp)
             ) {
+                var numberOfBooksInTheCart: Int = 0
+                var totalMoneyToSpend: Int = 0
+                var address: String = "3988 White Plains Road, Bronx, Ny, 10466"
+                var postalCode: Int = 10466
+
                 LazyColumn {
                     items (listMapOfBooksInShoppingCart.size) { idx ->
-                        ShoppingCartCard (context, listMapOfBooksInShoppingCart[idx], mapOfUser)
+                        ShoppingCartCard (context, listMapOfBooksInShoppingCart[idx], mapOfUser) { tot ->
+                            totalMoneyToSpend = tot
+                        }
+                        numberOfBooksInTheCart += 1
                     }
                 }
+                /** TODO: define the following variables in such a way they can dynamically change as
+                 * the user changes it.
+                 */
+
+                CheckOutSection(numberOfBooksInTheCart, address, postalCode, totalMoneyToSpend)
+            }
+        }
+    }
+
+    @Composable
+    private fun CheckOutSection(itemsNumber: Number, postalCode: String, total: Number, shipping: Number) {
+        DecoratedHorizontalDivider()
+        CheckOutText(itemsNumber, postalCode, total, shipping)
+        DecoratedHorizontalDivider()
+    }
+
+    @Composable
+    private fun CheckOutText(itemsNumber: Number, postalCode: String, total: Number, shipping: Number) {
+        Column {
+            Row {
+                Text(text = "Items(${itemsNumber})")
+                Spacer(Modifier.weight(1f))
+                Text(text = total.toString())
+            }
+            Row {
+                Text(text = "Shipping to (${postalCode})")
+                Spacer(Modifier.weight(1f))
+                Text(text = shipping.toString())
             }
         }
     }
 
     @OptIn(UnstableApi::class)
     @Composable
-    private fun ShoppingCartCard(context: Context, book: Map<String, String>, mapOfUser: MutableMap<String, String>) {
+    private fun ShoppingCartCard(
+        context: Context,
+        book: Map<String, String>,
+        mapOfUser: MutableMap<String, String>,
+        onChangeTotal: (Int) -> Unit
+    ) {
 
         Card (
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
             border = BorderStroke(2.dp, Color.DarkGray),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(220.dp)
+//                .height(220.dp)
+                .height(IntrinsicSize.Min)
+                .wrapContentHeight()//Needed for dynamically pose the height of the card.
                 .padding(8.dp)
         ) {
             Row (modifier = Modifier.padding(all = 8.dp)) {
@@ -107,9 +155,7 @@ class ShoppingCartView {
                 Column (modifier = Modifier
                     .weight(2f)
                     .fillMaxWidth()) {
-//                    Row (
-//                        modifier = Modifier.fillMaxWidth().wrapContentHeight()
-//                    ) {
+
                     // Description short version.
                     Text (
                         modifier = Modifier.padding(4.dp),
@@ -117,17 +163,29 @@ class ShoppingCartView {
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     )
-//                    }
+
                     MyScrollingFunction(book["description"].toString())
 
-                    var q: String = ""
+                    var q: Int = 0
                     // Quantity and Price
-                    QuantityAndPrice(book = book){ quantity ->
-                        q = quantity
-                        Log.d("myQuantity",q)
+                    QuantityAndPrice(book = book) { quantity ->
+                        q = if (quantity.isNotEmpty()) {
+//                            if (quantity ? as )
+                            quantity.toInt()
+                        } else {
+                            0
+                        }
+                        Log.d("myTot", q.toString())
                     }
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun DecoratedHorizontalDivider() {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            HorizontalDivider(thickness = 2.dp)
         }
     }
 
@@ -145,23 +203,18 @@ class ShoppingCartView {
         }
 
         Column {
-//            Text(
-//                modifier = Modifier
-//                    .weight(1f)
-//                    .padding(4.dp),
-//                text = "Qty",
-//                fontSize = 8.sp,
-//                fontWeight = FontWeight.Bold,
-//                textAlign = TextAlign.End
-//            )
 
+            var n: Int = 0
             OutlinedTextField(
                 value = quantityNumber,
                 onValueChange = { quantityValue ->
-                    onChangeQuantityValue(quantityValue)
+//                    onChangeQuantityValue(quantityValue)
+                    onChangeQuantityValue("${if (quantityNumber.isNotEmpty()) (book["price"]?.toInt() ?:0)*quantityNumber.toInt() else 0}")
                     quantityNumber = quantityValue
                 },
-                modifier = Modifier.width(60.dp).height(60.dp),
+                modifier = Modifier
+                    .width(60.dp)
+                    .height(60.dp),
                 keyboardActions = KeyboardActions(
                     onNext = { focusManager.moveFocus(FocusDirection.Down) }
                 ),
@@ -177,10 +230,11 @@ class ShoppingCartView {
                 modifier = Modifier
                     .weight(1f)
                     .padding(4.dp),
-                text = "${(book["price"]?.toInt() ?:0)*quantityNumber.toInt()}",
+                text = "${if (quantityNumber.isNotEmpty()) (book["price"]?.toInt() ?:0)*quantityNumber.toInt() else 0}",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.End
+                textAlign = TextAlign.End,
+
             )
         }
     }
@@ -219,7 +273,7 @@ class ShoppingCartView {
 //    }
 
     @Composable
-    private fun MyScrollingFunction(myText: String) {
+    private fun MyScrollingFunction(bookText: String) {
 
         /** Scrolling down method for description.
          * pre: myText is the description.
@@ -231,7 +285,7 @@ class ShoppingCartView {
                 .fillMaxWidth()
 //                .height(60.dp)
                 .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
-            text = myText,//book.getDescription(),
+            text = bookText,//book.getDescription(),
             fontSize = 16.sp,
             textAlign = TextAlign.Center,
             color = Color.Gray

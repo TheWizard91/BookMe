@@ -154,7 +154,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     // Get all the values.
-                    task.forEach {  query ->
+                    task.forEach { query ->
                         listOfValues.add(query.data.values.toList() as List<String>)
                     }
 
